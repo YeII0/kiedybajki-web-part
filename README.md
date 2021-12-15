@@ -44,7 +44,7 @@ The most important solutions include bcrypt for hashing passwords, CSRF tokens, 
 - X-Frame-Options,
 - X-Content-Type-Options.
 
-## Official site:
+## App url:
 https://kiedybajki.moe
 
 ## More about application:
