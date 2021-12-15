@@ -1,6 +1,9 @@
 # Web part of Kiedy Bajki app.
 Doesn't include task for checking pages for certain changes and making notifications to users about subscribed titles.
 
+## App url
+https://kiedybajki.moe
+
 ## In a nutshell
 Application send notifications through Discord communicator about new anime episodes
 choosed by user on choosed sites. Notifications contains links to episodes and small cover picture which can be enlarge by click.
@@ -43,9 +46,6 @@ The most important solutions include bcrypt for hashing passwords, CSRF tokens, 
 - Referrer-Policy,
 - X-Frame-Options,
 - X-Content-Type-Options.
-
-## App url:
-https://kiedybajki.moe
 
 ## More about application:
 https://kiedybajki.moe/about
