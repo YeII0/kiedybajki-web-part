@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}
+    <meta name="description" content="Kiedy Bajki - rozpiska anime, które możesz zasubskrybować, aby dostawać powiadomienia na discorda.">
+{% endblock meta_description %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='main/styles/subscriptions.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='main/styles/anime_list.css') }}">
+{% endblock styles %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='main/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='main/scripts/add_subscription.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+<h1>Rozpiska anime</h1>
+{% for season_info, season_list in ordered_seasons.items() %}
+    {{ season_table(season_info, season_list) }}
+{% endfor %}
+
+{% endblock content %}
+
+
+{% macro season_table(season_info, season_list) -%}
+{% if season_list|length %}
+<h2 class="mg-bt-0">{{ season_info[1] }}</h2>
+<table class="anime-list--tb" id="{{ season_info[0] }}">
+    <thead>
+        <tr>
+            <th>Tytuł</th>
+            <th>Wbijam</th>
+            <th>A-o</th>
+            <th>Okami-subs</th>
+            <th>Animesub</th>
+            <th>Forum Animesub</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for anime in season_list %}
+        <tr>
+            <td class="overflow-break-word">
+                <div class="relative">
+                    <a href="{{ anime.mal_link }}" target="_blank" rel="noopener">{{ anime.title }}</a>
+                    {% if anime.cover_rel_url %}
+                    <div class="cover-container display-none">
+                        <img src="{{ url_for('static', filename=anime.cover_rel_url) }}">
+                    </div>
+                    {% endif %}
+                </div>
+            </td>
+            <td>
+                {% if anime.wbijam %}
+                <img class="subscriptions--mark" alt="Jest" src="{{ static_url_for('static', filename='general/media/icons/checkbox_checkmark.svg') }}"/>
+                {% else %}
+                <img class="subscriptions--mark subscriptions--crossmark" alt="Brak" src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}" />
+                {% endif %}
+            </td>
+            <td>
+                {% if anime.anime_odcinki %}
+                <img class="subscriptions--mark" alt="Jest" src="{{ static_url_for('static', filename='general/media/icons/checkbox_checkmark.svg') }}" />
+                {% else %}
+                <img class="subscriptions--mark subscriptions--crossmark" alt="Brak" src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}" />
+                {% endif %}
+            </td>
+            <td>
+                {% if anime.okami_subs %}
+                <img class="subscriptions--mark" alt="Jest" src="{{ static_url_for('static', filename='general/media/icons/checkbox_checkmark.svg') }}"/>
+                {% else %}
+                <img class="subscriptions--mark subscriptions--crossmark" alt="Brak" src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}" />
+                {% endif %}
+            </td>
+            <td class="overflow-break-word">
+                {% if anime.animesub | length %}
+                <ul>
+                    {% for animesub in anime.animesub %}
+                    <li>{{ animesub.author }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <img class="subscriptions--mark subscriptions--crossmark" alt="Brak" src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}" />
+                {% endif %}
+            </td>
+            <td class="overflow-break-word">
+                {% if anime.animesub_forum | length %}
+                <ul>
+                    {% for animesub_forum in anime.animesub_forum %}
+                    <li>{{ animesub_forum.author }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <img class="subscriptions--mark subscriptions--crossmark" alt="Brak" src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}" />
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{%- endmacro %}

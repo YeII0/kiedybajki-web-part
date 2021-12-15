@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='admin/scripts/menu.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+<h1>Panel admina</h1>
+    
+<h2 class="header small-header">Anime</h2>
+<ul>
+    <li>
+        <a href="{{ url_for('admin_bp.add_anime') }}">Dodawanie</a>
+    </li>
+    <li>
+        <a href="{{ url_for('admin_bp.anime') }}">Edycja</a>
+    </li>
+</ul>
+
+<h2 class="header small-header">Wbijam</h2>
+<ul>
+    <li>
+        <a href="{{ url_for('admin_bp.add_wbijam') }}">Dodawanie</a>
+    </li>
+    <li>
+        <a href="{{ url_for('admin_bp.wbijam') }}">Edycja</a>
+    </li>
+</ul>
+
+<h2 class="header small-header">Anime-odcinki</h2>
+<ul>
+    <li>
+        <a href="{{ url_for('admin_bp.add_anime_odcinki') }}">Dodawanie</a>
+    </li>
+    <li>
+        <a href="{{ url_for('admin_bp.anime_odcinki') }}">Edycja</a>
+    </li>
+</ul>
+
+<h2 class="header small-header">Okami-subs</h2>
+<ul>
+    <li>
+        <a href="{{ url_for('admin_bp.add_okami_subs') }}">Dodawanie</a>
+    </li>
+    <li>
+        <a href="{{ url_for('admin_bp.okami_subs') }}">Edycja</a>
+    </li>
+</ul>
+
+<h2 class="header small-header">Animesub</h2>
+<ul>
+    <li>
+        <a href="{{ url_for('admin_bp.add_animesub') }}">Dodawanie</a>
+    </li>
+    <li>
+        <a href="{{ url_for('admin_bp.animesub') }}">Edycja</a>
+    </li>
+</ul>
+
+<h2 class="header small-header">Forum Animesub</h2>
+<ul>
+    <li>
+        <a href="{{ url_for('admin_bp.add_animesub_forum') }}">Dodawanie</a>
+    </li>
+    <li>
+        <a href="{{ url_for('admin_bp.animesub_forum') }}">Edycja</a>  
+    </li>
+</ul> 
+
+<h2 class="header small-header">Funkcje</h2>
+        <div class="mg-bt-16 mg-top-16">
+            <form id="main-form" action="{{ url_for('admin_bp.indicate_news') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <input type="submit" class="btn btn-small" value="Oznacz newsa">
+                <small class="muted mg-left-4">
+                    Zmienia wartość <em>is_saw_news</em> wszystkich użytkowników na <em>False</em>.
+                    Użyć po dodaniu newsa.
+                </small>
+            </form>
+        </div>
+
+{% endblock content %}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Yello">
+  {% block meta_description %}
+  {% endblock meta_description %}
+
+  {% if title %}
+    <title>{{ title }}</title>
+  {% else %}
+    <title>Kiedy Bajki</title>
+  {% endif %}
+
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link rel="shortcut icon" href="{{ static_url_for('static', filename='general/media/icons/favicon.svg') }}">
+  <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='general/styles/normalizer.css') }}">
+  <style>
+    :root {
+      --img-crosses: url({{ static_url_for('static', filename='general/media/graphics/crosses_bg_50x50.png') }});
+      --img-discord: url({{ static_url_for('static', filename='general/media/icons/discord.svg') }});
+      --img-mail: url({{ static_url_for('static', filename='general/media/icons/mail.svg') }});
+      --img-checkmark: url({{ static_url_for('static', filename='general/media/icons/checkbox_checkmark.svg') }});
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='general/styles/main.css') }}">
+  {% block styles %}
+  {% endblock styles %}
+
+  <script src="{{ static_url_for('static', filename='general/scripts/fns.js') }}" defer></script>
+  <script src="{{ static_url_for('static', filename='general/scripts/run_general_fns.js') }}" defer></script>
+  <script src="{{ static_url_for('static', filename='general/scripts/service_worker_reg.js') }}" defer></script>
+  {% block script %}{% endblock %}
+</head>
+
+<body>
+    <!-- 
+      Stores link to versioned cache_manifest.json if exist. 
+      Otherwise just store link to original cache manifest.json.
+    -->
+    <span id="cache_manifest" class="display-none"
+      data-cache-manifest-url="{{ static_url_for('static', filename='cache_manifest.json') }}"></span>
+      
+    <!-- Navigation -->
+    <header>
+      <nav>
+        <div class="nav-content">
+
+          {% if current_user.is_authenticated %}
+          <a href="{{ url_for('main_bp.subscriptions') }}" class="logo-link">
+            <img src="{{ static_url_for('static', filename='general/media/graphics/logo_300w.png') }}" alt="Kiedy Bajki logo" />
+          </a>
+          {% else %}
+          <a href="{{ url_for('users_bp.login') }}" class="logo-link">
+            <img src="{{ static_url_for('static', filename='general/media/graphics/logo_300w.png') }}" alt="Kiedy Bajki logo" />
+          </a>
+          {% endif %}
+
+          <input type="checkbox" id="nav-input" name="menu-toggle" />
+          <label for="nav-input" class="menu-toggle"><img src="{{ static_url_for('static', filename='general/media/icons/burger.svg') }}"
+              alt="Burger icon"></label>
+              
+          <div class="menu-list">
+            <ul>
+              {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('main_bp.subscriptions') }}">Moje subskrypcje</a></li>
+                <li><a href="{{ url_for('main_bp.subscribe') }}">Dodaj nowe subskrypcje</a></li>
+                {% if current_user.admin %}
+                  <li><a href="{{ url_for('admin_bp.menu') }}">Admin</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('main_bp.about') }}">O aplikacji</a></li>
+                <li><a href="{{ url_for('main_bp.news') }}">Nowości</a></li>
+              {% else %}
+                <li><a href="{{ url_for('main_bp.anime_list') }}">Rozpiska anime</a></li>
+                <li><a href="{{ url_for('main_bp.about') }}">O aplikacji</a></li>
+              {% endif %}
+                
+            </ul>
+            <ul>
+              {% if current_user.is_authenticated %}
+              <li><a href="{{ url_for('users_bp.account') }}">Konto</a></li>
+              <li><a href="{{ url_for('users_bp.logout') }}">Wyloguj</a></li>
+              {% else %}
+              <li><a href="{{ url_for('users_bp.login') }}">Logowanie</a></li>
+              <li><a href="{{ url_for('users_bp.register') }}">Rejestracja</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+<!-- Belt news notification -->
+{% if current_user.is_authenticated and not current_user.is_saw_news %} 
+  <div class="belt-notification">
+    <a href="{{ url_for('main_bp.news') }}">Wprowadzono zmiany w aplikacji. Kliknij tutaj aby je wyświetlić.</a>
+    <form action="{{ url_for('main_bp.set_saw_news') }}" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div>x</div>
+    </form>
+  </div>
+{% endif %}    
+
+  <!-- Content -->
+  <main> 
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <address>
+      <ul>
+        <li><a href="https://discord.gg/EbzV6Tc">Kiedy Bajki</a></li>
+        <li><a href="mailto:kiedybajki@gmail.com">kiedybajki@gmail.com</a></li>
+      </ul>
+      <small class="muted">Yello#8637</small>
+    </address>
+  </footer>
+  <!-- Float alert -->
+  <div class="float-alert invisible"></div>
+</body>
+
+</html>

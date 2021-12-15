@@ -1,0 +1,257 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}
+    <meta name="description"
+    content="Kiedy Bajki - opis działania i konfiguracja aplikacji.">
+{% endblock meta_description %}
+
+{% block content %}
+<article>
+    <h1>Kiedy Bajki</h1>
+    <h2>Opis aplikacji</h2>
+
+    <dl>
+        <dt>Do czego służy?</dt>
+        <dd>
+            <p>
+                Aplikacja wysyła powiadomienia na discorda o nowych odcinkach sezonówek i
+                popularnych tasiemców wybranych przez użytkownika na wybranych przez jego stronach.
+                Powiadomienia zawierają
+                linki do odcinków i miniaturkę okładki, którą można powiększyć kliknięciem.
+            </p>
+            <figure>
+                <img src="{{ static_url_for('static', filename='general/media/manual_screenshots/notification_example.png') }}" />
+                <figcaption>Przykładowe powiadomienie</figcaption>
+            </figure>
+        </dd>
+
+        <dt>Komu może się przydać?</dt>
+        <dd>
+            <p>
+                Przyda się osobom, które korzystają z discorda i chcą być na bierząco z odcinkami wybranych
+                anime
+                nie musząc jednocześnie odświeżać regularnie stronek z nimi.
+            </p>
+        </dd>
+
+        <dt>Obsługiwane strony</dt>
+        <dd>
+            <ul>
+                <li>Wbijam</li>
+                <li>Animesub</li>
+                <li>Forum Animesub (niektóre hardsuby)</li>
+                <li>Okami-subs</li>
+                <li>Anime-odcinki</li>
+            </ul>
+            <p>Narazie nie przewiduję dodawania innych serwisów.</p>
+        </dd>
+    </dl>
+
+    <h2>Korzystanie z aplikacji</h2>
+
+    <dl>
+        <dt id="creating_webhook">Konfiguracja</dt>
+        <dd>
+            <p>
+                Stwórz konto, aktywuj je za pomocą linku aktywacyjnego wysłanego na emaila i zaloguj się.
+            </p>
+            <p>
+                Przed rozpoczęciem korzystania z aplikacji należy stworzyć <em>webhooka</em> w discordzie.
+                Discordowy <em>webhook</em> jest funkcjonalnością pozwalającą na otrzymywanie zautomatyzowanych
+                powiadomień.
+                Po więcej informacji na temat działania <em>webhooka</em> odsyłam
+                <a rel="noopener" target="_blank"
+                    href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks">tutaj</a>.
+            </p>
+            <p>
+                By stworzyć <em>webhooka</em> wejdź w ustawienia serwera na którym chcesz otrzymywać
+                powiadomienia,
+                następnie wybierz <em>Webhooki</em> -> <em>Tworzenie webhooka</em>.
+                W okienku tworzenia <em>webhooka</em> należy wybrać kanał do jakiego ma być przypisany.
+                Na tym kanale będę wysyłane za jego pośrednictwem powiadomienia o nowych odcinkach.
+                Na samym dole okienka znajduję się adres url webhooka,
+                to za jego pomocą aplikacja będzie mogła połączyć się z <em>webhookiem</em> i wysyłać
+                powiadomienia.
+                <strong>Skopiuj adres url, będziesz go potrzebował do dokończenia konfiguracji.</strong>
+                Opcjonalnie można zmienić nazwe <em>webhooka</em> i dodać avatar.
+            </p>
+            <p>
+                Aby dokończyć konfigurację wróć do aplikacji <strong>Kiedy Bajki</strong>,
+                kliknij w menu <em>Konto</em> i w polu <em>Discord webhook</em> wklej adres url
+                <em>webhooka</em>,
+                który uprzednio skopiowałeś, po czym kliknij przycisk <em>Zaktualizuj</em>. Teraz możesz już
+                korzystać z
+                aplikacji.
+            </p>
+        </dd>
+
+        <dt>Nawigacja</dt>
+        <dd>
+            <p>
+                Wybierz z menu <em>Dodaj nowe subskrypcje</em>, znajdź na liście interesujące cię anime
+                i wybierz z
+                jakich serwisów
+                i w przypadku <em>Animesub</em> oraz <em>Forum Animesub</em> od jakich autorów chcesz dostawać
+                powiadomienia.
+                Kliknij przycisk <em>Zatwierdź</em> aby zapisać zmiany. Od teraz zasubskrybowana pozycja będzię
+                się
+                znajdowała
+                na liście twoich subskrypcji. Liste subskrypcji można sprawdzić klikając w menu <em>Moje
+                    subskrypcje</em>.
+                Z tego też miejsca można edytować zasubskrybowane pozycje. Dostosuj wybraną pozycję, następnie
+                kliknij
+                przycisk <em>Zatwierdź</em>.
+                Jeżeli odznaczyłeś wszystkie opcje w edytowanej pozycji trafi ona z powrotem do
+                niesubskrybowanych pozycji,
+                do których można się dostać klikając w menu <em>Dodaj nowe subskrypcje</em>.
+            </p>
+        </dd>
+
+        <dt>Zasada działania</dt>
+        <dd>
+            <p>
+                Aplikacja w 5 minutowych odstępach czasu sprawdza na obsługiwanych stronach z anime czy dodano
+                nowe odcinki.
+                Jeżeli pojawiło się coś nowego, dostajesz powiadomienie. Załóżmy, że obserwujesz <em>One
+                    Piece</em> na kilku
+                stronkach.
+                Jeżeli jedna ze stronek jest do tyłu z epizodami <em>One Piece</em>
+                względem innych obserwowanych przez ciebie stron, nie będziesz dostawał od niej powiadomień.
+                Innymi słowy będziesz dostawał powiadomienia o odcinkach tylko z serwisów które są najbardziej
+                na bierząco.
+            </p>
+            <p id="independent_counter">
+                Można zmienić domyślną zasadę na podstawie której wysyłane są nowe odcinki. Zmiany dokonuję się
+                w
+                ustawieniach konta.
+                Kliknij w menu <em>Konto</em> a następnie w dziale ustawień zaznacz
+                <em>Niezależne powiadomienia dla każdej strony z anime</em>.
+                Z zaznaczoną opcją numery najnowszych odcinków z jednych stron nie będą porównywane z numerami
+                najnowszych
+                odcinków z innych stron.
+                W związku z tym będą wysyłane powiadomienia o nowo dodanych odcinkach również ze stron,
+                które są w tyle w porównaniu do innych obserwowanych stron.
+            </p>
+        </dd>
+        <dt>Powiadomienia o nowych tytułach dodanych do bazy <span class="label light">opcjonalne</span></dt>
+        <dd>
+            <p>
+                Kiedy do bazy zostanie dodany nowy tytuł możesz zostać o tym powiadomiony.
+                Przydatne szczególnie na początku nowego sezonu kiedy dodawane są do bazy nowe tytuły do subskrybowania.
+                Powiadomienia będą wysyłane za pomocą <em>webhooka</em> tak jak w przypadku powiadomień o nowych odcinkach
+                subskrybowanych bajek.
+            </p>
+            <figure>
+                <img
+                    src="{{ static_url_for('static', filename='general/media/manual_screenshots/new_title_notification_example.png') }}" />
+                <figcaption>Przykładowe powiadomienie</figcaption>
+            </figure>
+            <p>
+                Powiadomienia są opcjonalne, aby je włączyć wybierz z menu <em>Konto</em> i zaznacz
+                <em>Powiadomienia o nowych tytułach dodanych do bazy</em>. Domyślnie powiadomienia są wysyłane
+                na tego samego <em>webhooka</em> co powiadomienia o nowych odcinkach subskrybowanych tytułów.
+                Po zaznaczeniu opcji pojawi się nowe pole <em>Dodatkowy discord webhook (opcjonalnie)</em>
+                w którym można wprowadzić dodatkowego webhooka. Będzie on służył wyłącznie do wysyłania
+                powiadomień o nowych tytułach dodanych do bazy.
+            </p>
+        </dd>
+    </dl>
+
+    <h2>Rozwiązywanie problemów</h2>
+
+    <dl>
+        <dt>Nie ma na liście bajki którą oglądam
+            <img class="emote-in-text" src="{{ static_url_for('static', filename='general/media/emotes/sadcat.png') }}" alt="Smutaśny kotek" />
+        </dt>
+        <dd>
+            <p>
+                Do bazy dodaję tylko sezonówki i tasiemce. Jeżeli na jakiejś obsługiwanej stronce jest już co
+                najmniej jeden
+                odcinek
+                tasiemca/sezonówki, którą oglądasz, to napisz na moim <a
+                    href="https://discord.gg/7QFMp44">discordzie</a> na
+                kanale <em>#nie-ma-mojej-bajki</em>.
+                Jeżeli oglądasz jakiegoś tasiemca/sezonówke od konkretnego autora z <em>Animesub</em> i nie ma
+                go na liście
+                to też pisz na tym kanale.
+            </p>
+        </dd>
+
+        <dt>
+            To jest moje nowe konto, dodałem(am) do listy subskrypcji interesujące mnie pozycje,
+            ale nie dostałem/am jeszcze żadnego powiadomienia mimo, że wyszły już nowe odcinki.
+        </dt>
+
+        <dd>
+            <p>
+                Prawdopodobnie webhook został nieprawidłowo skonfigurowany,
+                usuń starego i postępuj zgodnie z instrukcją znajdującą się
+                <a href="#creating_webhook">powyżej</a>.
+            </p>
+        </dd>
+
+        <dt>
+            Przestałem(am) dostawać powiadomienia tylko z jednej stronki.
+        </dt>
+
+        <dd>
+            <p>
+                Możliwe, że adres strony się zmienił bądź jej kod html.
+                Na podstawie znaczników html aplikacja sprawdza czy pojawiły się nowe odcinki. Jeżeli
+                kod uległ zmianie,
+                to powiadomienia ze stronki mogą przestać działać.
+                Sprawdź czy informacji o tym błędzie nie ma na kanale <em>#znane-błędy</em> lub
+                <em>#zgłoś-błąd</em>,
+                jeżeli nie i problem trwa od kilku dni, napisz na <em>#zgłoś-błąd</em>.
+            </p>
+        </dd>
+
+        <dt>
+            Przestałem(am) dostawać powiadomienia ze wszystkich obserwowanych stron, a strona
+            <strong>Kiedy
+                Bajki</strong> działa.
+        </dt>
+
+        <dd>
+            <p>
+                Sprawdź czy nie ma informacji o tym na kanale <em>#znane-błędy</em>,
+                <em>#zgłoś-błąd</em> lub
+                <em>#problemy-techniczne</em>, jeżeli nie a
+                sytuacja utrzymuje się od kilku dni, napisz na <em>#zgłoś-błąd</em>.
+            </p>
+        </dd>
+
+        <dt>
+            Przestałem(am) dostawać powiadomienia ze wszystkich obserwowanych stron, a strona
+            <strong>Kiedy
+                Bajki</strong> nie działa.
+        </dt>
+
+        <dd>
+            <p>
+                Prawdopodobnie serwer padł lub wprowadzam zmiany w aplikacji. Sprawdź czy nie ma
+                informacji o tym na
+                kanale
+                <em>#problemy-techniczne</em>, jeżeli nie, a sytuacja trwa od kilku dni, napisz na
+                <em>#zgłoś-błąd</em>.
+            </p>
+        </dd>
+    </dl>
+
+    <h2>Kontakt</h2>
+    <p>
+        Masz pytania związane z aplikacją? <a href="https://discord.gg/7QFMp44">Dołącz</a> do mojego
+        discorda i
+        napisz na kanale <em>#pytańska</em> lub
+        w prywatnej wiadomości, nick Yello#8637.
+        Na discordzie będę zamieszczał informacje o znanych mi problemach, błędach aplikacji i przerwach
+        technicznych.
+        Jeżeli coś będzie nie halo, zajrzyj na <em>#problemy-techniczne</em>, <em>#znane-błędy</em>,
+        <em>#zgłoś-błąd</em>.
+        Zapraszam też osoby, które chcą po prostu sobie pobajdzurzyć o ryżowych opowieściach
+        <img class="emote-in-text" src="{{ static_url_for('static', filename='general/media/emotes/lexellence.png') }}" alt="Lexellence!" />
+    </p>
+
+</article>
+
+{% endblock content %}

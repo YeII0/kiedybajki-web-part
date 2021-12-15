@@ -1,0 +1,264 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}
+    <meta name="description" 
+    content="Kiedy Bajki - lista subskrybowanych przez Ciebie powiadomień o nowych odcinkach anime.">
+{% endblock meta_description %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='main/styles/subscriptions.css') }}">
+{% endblock styles %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='main/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='main/scripts/subscriptions.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+    {% if not anime_dic|length %}
+    <p class="center-text">
+        Brak subskrypcji
+        <img src="{{ static_url_for('static', filename='general/media/emotes/pepehands.png') }}" alt="Pepehands"/>
+    </p>
+    {% else %}
+        <h1>Subskrypcje</h1>
+        {% for season_info, season_dic in ordered_seasons.items() %}
+            {{ season_table(season_info, season_dic) }}
+        {% endfor %}
+    {% endif %}
+
+{% endblock content %}
+
+{% macro season_table(season_info, season_dic) -%}
+    {% if season_dic|length %}
+
+    <!-- Hidden forms for every anime -->
+    {% for title_dic in season_dic.values() %}
+        <form 
+            class="display-none" 
+            id="form-anime-{{ title_dic['anime_content'].anime_id }}" 
+            action="{{ url_for('main_bp.update_subscription') }}"
+            method="POST" 
+            novalidate
+        >
+        </form>
+    {% endfor %}
+
+    <h2 class="mg-bt-0">{{ season_info[1] }}</h2>
+    <table class="subscriptions--tb" id="{{ season_info[0] }}">
+        <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Wbijam</th>
+                <th>A-o</th>
+                <th>Okami-subs</th>
+                <th>Animesub</th>
+                <th>Forum Animesub</th>
+                <th>Zatwierdzenie</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for title_dic in season_dic.values() %}
+            <tr>
+                <td class="overflow-break-word">
+                    <div class="relative">
+                        <a href="{{ title_dic['anime_content'].mal_link }}" target="_blank" rel="noopener">
+                            {{ title_dic['anime_content'].title }}
+                        </a>
+                        {% if title_dic['anime_content'].cover_rel_url %}
+                            <div class="cover-container display-none">
+                                <img src="{{ url_for('static', filename=title_dic['anime_content'].cover_rel_url) }}">
+                            </div>
+                        {% endif %}
+                    </div>
+            
+                    
+                </td>
+                    <td>
+                        {{ edit_form.csrf_token(
+                                id="csrf_token-" + title_dic['anime_content'].anime_id | string, 
+                                form="form-anime-" + title_dic['anime_content'].anime_id | string
+                                ) 
+                        }}
+                        {{ edit_form.anime_id(
+                                type="hidden", 
+                                value=title_dic['anime_content'].anime_id, 
+                                id="anime_id-" + title_dic['anime_content'].anime_id | string,
+                                form="form-anime-" + title_dic['anime_content'].anime_id | string
+                                ) 
+                        }}
+
+                        {% if "is_wbijam_sub" in title_dic %}
+                            {% if title_dic["is_wbijam_sub"] %}
+                                {{ edit_form.wbijam_sub(
+                                    checked="True", 
+                                    id="wbijam_sub-" + title_dic['anime_content'].anime_id | string, 
+                                    form="form-anime-" + title_dic['anime_content'].anime_id | string
+                                    ) 
+                                }}
+                            {% else %}
+                                {{ edit_form.wbijam_sub(
+                                    id="wbijam_sub-" + title_dic['anime_content'].anime_id | string,
+                                    form="form-anime-" + title_dic['anime_content'].anime_id | string
+                                    ) 
+                                }}
+                            {% endif %}
+                        {% else %}
+                            <img 
+                                class="subscriptions--mark subscriptions--crossmark" 
+                                src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}"
+                                alt="Brak" 
+                            />
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {% if "is_anime_odcinki_sub" in title_dic %}
+                            {% if title_dic["is_anime_odcinki_sub"] %}
+                                {{ edit_form.anime_odcinki_sub(
+                                    checked="True", 
+                                    id="anime_odcinki_sub-" + title_dic['anime_content'].anime_id | string,
+                                    form="form-anime-" + title_dic['anime_content'].anime_id | string
+                                    ) 
+                                }}
+                            {% else %}
+                                {{ edit_form.anime_odcinki_sub(
+                                    id="anime_odcinki_sub-" + title_dic['anime_content'].anime_id | string,
+                                    form="form-anime-" + title_dic['anime_content'].anime_id | string
+                                    ) 
+                                }}
+                            {% endif %}
+                        {% else %}
+                            <img 
+                                class="subscriptions--mark subscriptions--crossmark" 
+                                src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}"
+                                alt="Brak" 
+                            />                        
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if "is_okami_subs_sub" in title_dic %}
+                            {% if title_dic["is_okami_subs_sub"] %}
+                                {{ edit_form.okami_subs_sub(
+                                    checked="True", 
+                                    id="okami_subs_sub-" + title_dic['anime_content'].anime_id | string,
+                                    form="form-anime-" + title_dic['anime_content'].anime_id | string
+                                    ) 
+                                }}
+                            {% else %}
+                                {{ edit_form.okami_subs_sub(
+                                    id="okami_subs_sub-" + title_dic['anime_content'].anime_id | string,
+                                    form="form-anime-" + title_dic['anime_content'].anime_id | string
+                                    ) 
+                                }}
+                            {% endif %}
+                        {% else %}
+                            <img 
+                                class="subscriptions--mark subscriptions--crossmark" 
+                                src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}"
+                                alt="Brak" 
+                            />                        
+                        {% endif %}
+                    </td>
+
+                    <td class="overflow-break-word">
+                        {% if title_dic['animesub'] | length %}
+
+                            {% for subscribed_authors in title_dic['animesub']['subscribed_authors'] %}
+                                <div class="form-pair-row">
+                                    <input 
+                                        checked type="checkbox" 
+                                        name="animesub_authors" 
+                                        value="{{ subscribed_authors.animesub_id }}"
+                                        id="animesub_sub-{{ title_dic['anime_content'].anime_id }}-{{ subscribed_authors.animesub_id }}"
+                                        form="form-anime-{{ title_dic['anime_content'].anime_id }}"
+                                    />
+                                    <label class="min-width-0" for="animesub_sub-{{ title_dic['anime_content'].anime_id }}-{{ subscribed_authors.animesub_id }}">
+                                        {{ subscribed_authors.author }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+
+                            {% for not_subscribed_authors in title_dic['animesub']['not_subscribed_authors'] %}
+                                <div class="form-pair-row">
+                                    <input 
+                                        type="checkbox" 
+                                        name="animesub_authors" 
+                                        value="{{ not_subscribed_authors.animesub_id }}"
+                                        id="animesub_sub-{{ title_dic['anime_content'].anime_id }}-{{ not_subscribed_authors.animesub_id }}"
+                                        form="form-anime-{{ title_dic['anime_content'].anime_id }}"
+                                    />
+                                    <label class="min-width-0" for="animesub_sub-{{ title_dic['anime_content'].anime_id }}-{{ not_subscribed_authors.animesub_id }}">
+                                        {{ not_subscribed_authors.author }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <img 
+                                class="subscriptions--mark subscriptions--crossmark" 
+                                src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}" 
+                                alt="Brak"
+                            />
+                        {% endif %}
+                    </td>
+
+                    <td class="overflow-break-word">
+                        {% if title_dic['animesub_forum'] | length %}
+
+                            {% for subscribed_authors in title_dic['animesub_forum']['subscribed_authors'] %}
+                                <div class="form-pair-row">
+                                    <input 
+                                        checked type="checkbox" 
+                                        name="animesub_forum_authors" 
+                                        value="{{ subscribed_authors.animesub_forum_id }}"
+                                        id="animesub_forum_sub-{{ title_dic['anime_content'].anime_id }}-{{ subscribed_authors.animesub_forum_id }}" 
+                                        form="form-anime-{{ title_dic['anime_content'].anime_id }}"
+                                    />
+                                    <label class="min-width-0" for="animesub_forum_sub-{{ title_dic['anime_content'].anime_id }}-{{ subscribed_authors.animesub_forum_id }}">
+                                        {{ subscribed_authors.author }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+
+                            {% for not_subscribed_authors in title_dic['animesub_forum']['not_subscribed_authors'] %}
+                                <div class="form-pair-row">
+                                    <input 
+                                        type="checkbox" 
+                                        name="animesub_forum_authors" 
+                                        value="{{ not_subscribed_authors.animesub_forum_id }}"
+                                        id="animesub_forum_sub-{{ title_dic['anime_content'].anime_id }}-{{ not_subscribed_authors.animesub_forum_id }}" 
+                                        form="form-anime-{{ title_dic['anime_content'].anime_id }}"
+                                    />
+                                    <label class="min-width-0" for="animesub_forum_sub-{{ title_dic['anime_content'].anime_id }}-{{ not_subscribed_authors.animesub_forum_id }}">
+                                        {{ not_subscribed_authors.author }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <img 
+                                class="subscriptions--mark subscriptions--crossmark" 
+                                src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}" 
+                                alt="Brak"
+                            />
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ edit_form.submit(
+                            class="btn btn-small",
+                            id="submit-" + title_dic['anime_content'].anime_id | string,
+                            form="form-anime-" + title_dic['anime_content'].anime_id | string
+                            ) 
+                        }}
+                    </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    {% endif %}    
+{%- endmacro %}

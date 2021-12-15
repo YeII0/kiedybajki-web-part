@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block meta_description %}
+    <meta name="description" content="Kiedy Bajki - resetowanie hasła.">
+{% endblock meta_description %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='users/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='users/scripts/reset_request.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+<form id="main-form" action="{{ url_for('users_bp.reset_request_submit') }}" novalidate>
+    {{ form.hidden_tag() }}
+    <h1>Resetowanie hasła</h1>
+    <section>
+        <div class="mg-bt-16">
+            {{ form.email.label(class="block mg-bt-4") }}
+            {{ form.email(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+        {{ form.submit(class="btn") }}
+    </section>
+
+</form>
+{% endblock content %}

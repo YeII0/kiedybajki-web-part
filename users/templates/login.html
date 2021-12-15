@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}
+    <meta name="description" 
+    content="Kiedy Bajki - powiadomienia na discorda o nowych odcinkach z popularnych polskich stron z anime.">
+{% endblock meta_description %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='users/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='users/scripts/login.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+<form id="main-form" class="mg-bt-8 border-bt" method="POST" action="{{ url_for('users_bp.login_submit') }}" novalidate>
+    {{ form.hidden_tag() }}
+    <h1>Logowanie</h1>
+    <section class="mg-bt-16">
+        <div class="mg-bt-8">
+            {{ form.email.label(class="block mg-bt-4") }}
+            {{ form.email(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-8">
+            {{ form.password.label(class="block mg-bt-4") }}
+            {{ form.password(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="form-pair-row mg-bt-32">
+            {{ form.remember() }}
+            {{ form.remember.label() }}
+        </div>
+       
+        <div class="form-pair-row">
+            {{ form.submit(class="btn") }}
+            <small class="block muted mg-top-4">
+                <a href="{{ url_for('users_bp.reset_request') }}">Zapomniałeś hasła?</a>
+            </small>
+        </div>
+    </section>
+</form>
+
+<small class="block muted mg-bt-8">
+    Nie masz konta? <a href="{{ url_for('users_bp.register') }}">Zarejestruj się</a>
+</small>
+<small class="block muted">
+    Nie wiesz o co chodzi? Kiedy Bajki to aplikacja wysyłająca powiadomienia o 
+    nowych odcinkach anime za pomocą discorda. Rozpiske anime znajdziesz <a href="{{ url_for('main_bp.anime_list') }}">tutaj</a>. 
+    Możesz subskrybować powiadomienia o nowych odcinkach jednej bajki, kilku lub wszystkich z jednej lub wielu stronek z anime. Wybór należy do ciebie. 
+    O działaniu i konfiguracji aplikacji możesz poczytać <a href="{{ url_for('main_bp.about') }}">tutaj</a>.
+</small>
+
+
+
+
+{% endblock content %}

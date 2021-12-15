@@ -1,0 +1,49 @@
+/*
+Styles anime_list.html page.
+*/
+
+/* General
+========================================================================== */
+
+/* More width for content */
+main
+{
+    max-width: 120rem;
+}
+
+/* Media queries
+========================================================================== */
+
+/* Adding specific table styles for smaller screens */
+@media screen and (max-width: 62.4375em)
+{
+    .anime-list--tb td:nth-of-type(1)::before { content: "Tytuł"; }
+	.anime-list--tb td:nth-of-type(2)::before { content: "Wbijam"; }
+	.anime-list--tb td:nth-of-type(3)::before { content: "A-o"; }
+	.anime-list--tb td:nth-of-type(4)::before { content: "Okami-subs"; }
+	.anime-list--tb td:nth-of-type(5)::before { content: "Animesub"; }
+    .anime-list--tb td:nth-of-type(6)::before { content: "Forum Animesub"; }  
+}
+
+/* Adding specific table styles for bigger screeens */
+@media screen and (min-width: 62.5em)
+{
+
+    /* Classes
+    ========================================================================== */
+
+    /* 
+    Columns with minmax function have also word-break property. 
+    Min width need to be set to fixed value because initial min-width for 1fr and auto is auto 
+    and it means that it will be equal to the longest word in content.
+    First column with title have 35rem min-width and it takes all avaible free space when it can.
+    With setted to 0 min-width will be very narrow when 5 and 6 column will take theirs full spaces. 
+    The reason is as a second argument in minmax function 1fr. It looks like that auto take more space in this configuration then 1fr.
+    Columns 5 and 6 have setted min-width to 0. It will never shrinked to 0 in this configuration cuz this layout will only
+    apply in devices width atleast equal to 62.5em. So there is enough space to break properly 1, 5, 6 column in the same time.
+    */    
+    .anime-list--tb
+    {
+        grid-template-columns: minmax(25rem, 1fr) auto auto auto minmax(0, auto) minmax(0, auto);
+    }
+}

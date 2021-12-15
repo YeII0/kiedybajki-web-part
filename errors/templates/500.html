@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <h1>
+        Coś poszło nie tak (500)
+    </h1>
+    <p>
+        Spróbuj ponownie za jakiś czas 
+        <img src="{{ static_url_for('static', filename='general/media/emotes/sadcat.png' ) }}">
+    </p>
+</div>
+{% endblock content %}

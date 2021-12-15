@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='admin/styles/admin_edit_anime.css') }}">
+{% endblock styles %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='admin/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='admin/scripts/wbijam.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+<h1>Edycja Wbijam</h1>
+{% for season_info, season_list in ordered_seasons.items() %}
+    {{ season_table(season_info, season_list) }}
+{% endfor %}
+
+{% endblock content %}
+
+<!-- 
+Creating table for one season. Pass as arguments list of 
+anime from certain season and title for heading.
+-->
+{% macro season_table(season_info, season_list) -%}
+    {% if season_list|length %}
+        <!-- Hidden forms for every anime -->
+        {% for wbijam in season_list %}
+            <form class="display-none" id="form-anime-{{ wbijam.anime_id }}" action="{{ url_for('admin_bp.edit_wbijam') }}"
+                method="POST" novalidate>
+            </form>
+        {% endfor %}
+
+        <h2 class="mg-bt-0">{{ season_info[1] }}</h2>
+
+        <!-- Table with one season -->
+        <table class="admin-wbijam--tb" id="{{ season_info[0] }}">
+            <thead>
+                <tr>
+                    <th>Tytuł</th>
+                    <th>Tytuł&nbsp;na&nbsp;stronie</th>
+                    <th>URL</th>
+                    <th>Cr_diff</th>
+                    <th>Cr_diff_title</th>
+                    <th>Zatwierdzenie</th>
+                    <th>Usuwanie</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for wbijam in season_list %}
+                    <tr>
+
+                        <!-- Anime title -->
+                        <td class="overflow-break-word">
+                            {{ wbijam.anime.title }}
+                        </td>
+
+                        <td>
+                            <!-- Hidden token -->
+                            {{ edit_form.csrf_token(
+                                        id="csrf_token-" + wbijam.anime_id | string,
+                                        form="form-anime-" + wbijam.anime_id | string
+                                        ) 
+                                    }}
+
+                            <!-- Hidden anime_id -->
+                            {{ edit_form.anime_id(
+                                        type="hidden", value=wbijam.anime_id, 
+                                        id="anime_id-" + wbijam.anime_id | string,
+                                        form="form-anime-" + wbijam.anime_id | string
+                                        ) }}
+                        
+                            <!-- Title on site -->
+                            {{ edit_form.title_in_site(
+                                                autocomplete="off", value=wbijam.title_in_site | default('', true), 
+                                                id="title_in_site-" + wbijam.anime_id | string,
+                                                form="form-anime-" + wbijam.anime_id | string
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>        
+                        </td> 
+
+                        <!-- Source link -->
+                        <td>
+                            {{ edit_form.source_link(
+                                                autocomplete="off", value=wbijam.source_link, 
+                                                id="source_link-" + wbijam.anime_id | string,
+                                                form="form-anime-" + wbijam.anime_id | string
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td>
+
+                        <!-- Cr numbering diff -->
+                        <td>
+                            
+                            {{ edit_form.cr_numbering_diff(
+                                                autocomplete="off", value=wbijam.cr_numbering_diff, 
+                                                id="cr_numbering_diff-" + wbijam.anime_id | string,
+                                                form="form-anime-" + wbijam.anime_id | string,
+                                                min="0"
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>     
+                        </td>     
+
+                        <!--Title without season/part number -->
+                        <td>
+                            {{ edit_form.cr_diff_title(
+                            autocomplete="off", value=wbijam.cr_diff_title | default('', true),
+                            id="cr_diff_title-" + wbijam.anime_id | string,
+                            form="form-anime-" + wbijam.anime_id | string,
+                            )
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td>
+
+                        <!-- Edit record button -->
+                        <td>
+                            <!-- Different button styles for every statement -->
+                            <!-- Error state -->
+                            {{ edit_form.submit(
+                                        class="btn btn-small",
+                                        id="submit-" + wbijam.anime_id | string,
+                                        form="form-anime-" + wbijam.anime_id | string
+                                        ) 
+                            }}                                                        
+                        </td>
+
+                        <!-- Remove record button -->
+                        <td>
+                            <form id="del-anime-form-{{ wbijam.anime_id }}" action="{{ url_for('admin_bp.delete_wbijam', anime_id=wbijam.anime_id) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                <input class="btn btn-small btn-danger" type="submit" value="Usuń" id="del-{{ wbijam.anime_id }}">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{%- endmacro %}

@@ -1,0 +1,71 @@
+/*
+Styles for subscriptions.html, add_subscription.html pages.
+Classes for checkmarks are also used by anime_list.html.
+*/
+
+/* General
+========================================================================== */
+
+/* More width for content */
+main
+{
+    max-width: 130rem;
+}
+
+
+
+/* Classes
+========================================================================== */
+
+.subscriptions--mark
+{
+    width: 1.6rem;
+    height: 1.6rem;
+    vertical-align: -0.2rem;
+}
+
+/* Media queries
+========================================================================== */
+
+/* Adding specific table styles for smaller screens */
+@media screen and (max-width: 62.4375em)
+{
+    .subscriptions--tb td:nth-of-type(1)::before { content: "Tytuł"; }
+	.subscriptions--tb td:nth-of-type(2)::before { content: "Wbijam"; }
+	.subscriptions--tb td:nth-of-type(3)::before { content: "A-o"; }
+	.subscriptions--tb td:nth-of-type(4)::before { content: "Okami-subs"; }
+	.subscriptions--tb td:nth-of-type(5)::before { content: "Animesub"; }
+    .subscriptions--tb td:nth-of-type(6)::before { content: "Forum Animesub"; } 
+    .subscriptions--tb td:nth-of-type(7)::before { content: "Zatwierdzenie"; }  
+}
+
+/* Adding specific table styles for bigger screeens */
+@media screen and (min-width: 62.5em)
+{
+    /* Classes
+    ========================================================================== */
+
+    /* 
+    Columns with minmax function have also word-break property. 
+    Min width need to be set to fixed value because initial min-width for 1fr and auto is auto 
+    and it means that it will be equal to the longest word in content.
+    First column with title have 20rem min-width and it takes all avaible free space when it can.
+    With setted to 0 min-width will be very narrow when 5 and 6 column will take theirs full spaces. 
+    The reason is as a second argument in minmax function 1fr. It looks like that auto take more space in this configuration then 1fr.
+    Columns 5 and 6 have setted min-width to 0. It will never shrinked to 0 in this configuration cuz this layout will only
+    apply in devices width atleast equal to 62.5em. So there is enough space to break properly 1, 5, 6 column in the same time.
+    */
+    .subscriptions--tb
+    {
+        grid-template-columns: minmax(20rem, 1fr) auto auto auto minmax(0, auto) minmax(0, auto) auto;
+    }
+
+    /*
+    Hide cross indication for better readability. 
+    It's fit nicely only for mobile table layout. 
+    */
+    .subscriptions--crossmark
+    {
+        display: none;
+    }
+}

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block meta_description %}
+    <meta name="description" content="Kiedy Bajki - resetowanie hasła.">
+{% endblock meta_description %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='users/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='users/scripts/reset_token.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+<form id="main-form" method="POST" action="{{ url_for('users_bp.new_password_submit', token=token) }}" novalidate>
+    {{ form.hidden_tag() }}
+    <h1>Resetowanie hasła</h1>
+    <section>
+        <div class="mg-bt-8">
+            {{ form.password.label(class="block mg-bt-4") }}
+            {{ form.password(class="input-block", minlength="5") }}
+            <div class="validation-error inline-block">&ZeroWidthSpace;</div
+            ><small class="block muted mg-top-4 inline-block">
+                Hasło powinno zawierać co najmniej 5 znaków.
+            </small>
+        </div>
+        <div class="mg-bt-16">
+            {{ form.confirm_password.label(class="block mg-bt-4") }}
+            {{ form.confirm_password(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+        {{ form.submit(class="btn") }}
+    </section>
+</form>
+{% endblock content %}

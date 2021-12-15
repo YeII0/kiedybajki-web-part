@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}
+    <meta name="description"
+    content="Kiedy Bajki - nowości i zmiany.">
+{% endblock meta_description %}
+
+{% block content %}
+<article>
+    <h1>Nowości i zmiany</h1>
+    <h2>16.12.2020</h2>
+    <dl>
+        <dt>Miniaturki okładek przy powiadomieniach <span class="label light">nowość</span></dt>
+        <dd>
+            <p>
+                Dodano miniaturki okładek do powiadomień. 
+                Po kliknięciu w miniaturkę zostanie wyświetlona w oryginalnym rozmiarze.
+            </p>
+            <figure>
+                <img src="{{ static_url_for('static', filename='general/media/manual_screenshots/notification_example.png') }}" />
+                <figcaption>Przykładowe powiadomienie</figcaption>
+            </figure>
+        </dd>
+    </dl>
+    <h2>15.12.2020</h2>
+    <dl>
+        <dt>Okładki do bajek <span class="label light">nowość</span></dt>
+        <dd>
+            <p>
+                Dodano możliwość wyświetlania okładek do każdego anime.
+                Przydatne na początku sezonu kiedy nie kojarzymy jeszcze bajek po samych tytułach.
+                Aby wyświetlić okładkę na urządzeniach z kursorem należy najechać 
+                nim na tytuł anime (link do mala). 
+                Aby wyświetlić okładkę na telefonach/tabletach z ekranem dotykowym należy dotknąć komórkę zawierającą tytuł anime i przytrzymać.
+            </p>
+        </dd>
+    </dl>
+    <h2>28.11.2020</h2>
+    <dl>
+        <dt>Powiadomienia o nowych tytułach dodanych do bazy <span class="label light">nowość</span></dt>
+        <dd>
+            <p>
+                Kiedy do bazy zostanie dodany nowy tytuł możesz zostać o tym powiadomiony.
+                Przydatne szczególnie na początku nowego sezonu kiedy dodawane są do bazy nowe tytuły do subskrybowania.
+                Powiadomienia będą wysyłane za pomocą <em>webhooka</em> tak jak w przypadku powiadomień o nowych odcinkach
+                subskrybowanych bajek.
+            </p>
+            <figure>
+                <img src="{{ static_url_for('static', filename='general/media/manual_screenshots/new_title_notification_example.png') }}"/>
+                <figcaption>Przykładowe powiadomienie</figcaption>
+            </figure>
+            <p>
+                Powiadomienia są opcjonalne, aby je włączyć wybierz z menu <em>Konto</em> i zaznacz
+                <em>Powiadomienia o nowych tytułach dodanych do bazy</em>. Domyślnie powiadomienia są wysyłane
+                na tego samego <em>webhooka</em> co powiadomienia o nowych odcinkach subskrybowanych tytułów.
+                Po zaznaczeniu opcji pojawi się nowe pole <em>Dodatkowy discord webhook (opcjonalnie)</em>
+                w którym można wprowadzić dodatkowego webhooka. Będzie on służył wyłącznie do wysyłania
+                powiadomień o nowych tytułach dodanych do bazy.
+            </p>
+        </dd>
+    </dl>
+
+</article>
+
+{% endblock content %}

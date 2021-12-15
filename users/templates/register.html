@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block meta_description %}
+    <meta name="description"
+    content="Kiedy Bajki - aby korzystać z funkcji wysyłania powiadomień o nowych odcinkach animed należy utworzyć konto.">
+{% endblock meta_description %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='users/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='users/scripts/register.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+<form id="main-form" class="mg-bt-8 border-bt" method="POST" action="{{ url_for('users_bp.register_submit') }}" novalidate>
+    {{ form.hidden_tag() }}
+    <h1>Rejestracja</h1>
+    <section class="mg-bt-16">
+            <div class="mg-bt-8">
+                {{ form.username.label(class="block mg-bt-4") }}
+                {{ form.username(class="input-block", minlength="2", maxlength="20") }}
+                <div class="validation-error">&ZeroWidthSpace;</div>
+            </div>
+
+            <div class="mg-bt-8">
+                {{ form.email.label(class="block mg-bt-4") }}
+                {{ form.email(class="input-block") }}
+                <div class="validation-error">&ZeroWidthSpace;</div>
+            </div>
+
+            <div class="mg-bt-16">
+                {{ form.password.label(class="block mg-bt-4") }}
+                {{ form.password(class="input-block", minlength="5") }}
+                <div class="inline-block validation-error">&ZeroWidthSpace;</div
+                ><small 
+                class="inline-block muted mg-top-4">
+                    Hasło powinno zawierać co najmniej 5 znaków.
+                </small>
+            </div>
+
+            <div class="mg-bt-16">
+                {{ form.confirm_password.label(class="block mg-bt-4") }}
+                {{ form.confirm_password(class="input-block") }}
+                <div class="validation-error">&ZeroWidthSpace;</div>
+            </div>
+            {{ form.submit(class="btn") }}
+    </section>
+</form>
+
+<small class="block muted">Masz już konto? <a href="{{ url_for('users_bp.login') }}">Zaloguj się</a></small>
+<small class="block muted mg-top-8">Strona korzysta z plików cookie wyłącznie w celu utrzymania sesji. Rejestracja wiąże się ze
+    zgodą na ich wykorzystanie.</small>
+  
+{% endblock content %}

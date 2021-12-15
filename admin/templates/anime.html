@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='admin/styles/admin_edit_anime.css') }}">
+{% endblock styles %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='admin/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='admin/scripts/anime.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+<h1>Edycja anime</h1>
+{% for season_info, season_list in ordered_seasons.items() %}
+    {{ season_table(season_info, season_list) }}
+{% endfor %}
+
+{% endblock content %}
+
+<!-- 
+Creating table for one season. Pass as arguments list of 
+anime from certain season and title for heading.
+-->
+{% macro season_table(season_info, season_list) -%}
+    {% if season_list|length %}
+        <!-- Hidden forms for every anime -->
+        {% for anime in season_list %}
+        <form class="display-none" id="form-anime-{{ anime.anime_id }}" action="{{ url_for('admin_bp.edit_anime') }}"
+            method="POST" novalidate>
+        </form>
+        {% endfor %}
+
+        <h2 class="mg-bt-0">{{ season_info[1] }}</h2>
+        <table class="admin-anime--tb" id="{{ season_info[0] }}">
+            <thead>
+                <tr>
+                    <th>Tytuł</th>
+                    <th>Sezon</th>
+                    <th>Mal URL</th>
+                    <th>URL nowej okładki</th>
+                    <th>Zatwierdzenie</th>
+                    <th>Usuwanie</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for anime in season_list %}
+                    <tr>
+                        <td>
+                            <!-- Hidden token -->
+                            {{ edit_form.csrf_token(
+                                        id="csrf_token-" + anime.anime_id | string,
+                                        form="form-anime-" + anime.anime_id | string
+                                        ) 
+                                    }}
+
+                            <!-- Hidden anime_id -->
+                            {{ edit_form.anime_id(
+                                        type="hidden", value=anime.anime_id, 
+                                        id="anime_id-" + anime.anime_id | string,
+                                        form="form-anime-" + anime.anime_id | string
+                                        ) }}
+                            
+                            <!-- Title -->
+                            {{ edit_form.title(
+                                                autocomplete="off", value=anime.title, 
+                                                id="title-" + anime.anime_id | string,
+                                                form="form-anime-" + anime.anime_id | string
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td>
+
+                        <!-- Season select list -->
+                        <td>
+                            <div class="select-wrapper select-small">
+                                {{ edit_form.season(
+                                                autocomplete="off", 
+                                                id="season-" + anime.anime_id | string,
+                                                form="form-anime-" + anime.anime_id | string
+                                                ) 
+                                }}
+                            </div>
+                            <div class="validation-error display-none"></div>
+                        </td>
+
+                        <!-- Mal link -->
+                        <td>
+                            {{ edit_form.mal_link(
+                                                autocomplete="off", 
+                                                value=anime.mal_link, id="mal_link-" + anime.anime_id | string,
+                                                form="form-anime-" + anime.anime_id | string
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td>
+
+                        <!-- New cover link -->
+                        <td>
+                            {{ edit_form.cover_link(
+                                                autocomplete="off", 
+                                                value=anime.cover_link, id="cover_link-" + anime.anime_id | string,
+                                                form="form-anime-" + anime.anime_id | string
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td>
+                                                
+                        <!-- Edit submit button -->
+                        <td>
+                            {{ edit_form.submit(
+                                        class="btn btn-small",
+                                        id="submit-" + anime.anime_id | string,
+                                        form="form-anime-" + anime.anime_id | string
+                                        ) 
+                            }}                
+                        </td>
+
+                        <!-- Delete submit button -->
+                        <td>
+                            <form id="del-anime-form-{{ anime.anime_id }}" action="{{ url_for('admin_bp.delete_anime', anime_id=anime.anime_id) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                <input class="btn btn-small btn-danger" type="submit" value="Usuń" id="del-{{ anime.anime_id }}">
+                            </form>
+                        </td>
+                    </tr>                     
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+    <!-- 
+    When there is no records for season empty hidden table and hidden header will be created.
+    It will be helpful in javascript when row will be moved to table which is empty.
+     -->
+    <h2 class="mg-bt-0 display-none">{{ season_info[1] }}</h2>
+    <table class="admin-anime--tb display-none" id="{{ season_info[0] }}">
+        <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Sezon</th>
+                <th>Mal URL</th>
+                <th>Zatwierdzenie</th>
+                <th>Usuwanie</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    {% endif %}
+{%- endmacro %}

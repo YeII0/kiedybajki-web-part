@@ -1,0 +1,195 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}
+    <meta name="description" content="Kiedy Bajki - subsbkrybowanie powiadomień o nowych odcinkach anime.">
+{% endblock meta_description %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='main/styles/subscriptions.css') }}">
+{% endblock styles %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='main/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='main/scripts/add_subscription.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+    {% if not anime_list|length %}
+    <p class="center-text">Subskrybujesz wszystko
+        <img src="{{ static_url_for('static', filename='general/media/emotes/pogchamp.png') }}" alt="Pogczamp"/>
+    </p>
+    {% else %}
+    <h1>Dodawanie subskrypcji</h1>
+        {% for season_info, season_list in ordered_seasons.items() %}
+            {{ season_table(season_info, season_list) }}
+        {% endfor %}
+    {% endif %}
+
+
+
+{% endblock content %}
+
+{% macro season_table(season_info, season_list) -%}
+    {% if season_list|length %}
+
+    <!-- Hidden forms for every anime -->
+    {% for anime in season_list %}
+        <form
+            class="display-none" 
+            id="form-anime-{{ anime.anime_id }}" 
+            action="{{ url_for('main_bp.update_subscription') }}" 
+            method="POST" 
+            novalidate
+        >
+        </form>             
+    {% endfor %}
+
+    <h2 class="mg-bt-0">{{ season_info[1] }}</h2>
+    <table class="subscriptions--tb" id="{{ season_info[0] }}">
+        <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Wbijam</th>
+                <th>A-o</th>
+                <th>Okami-subs</th>
+                <th>Animesub</th>
+                <th>Forum Animesub</th>
+                <th>Zatwierdzenie</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for anime in season_list %}       
+            <tr>
+                <td class="overflow-break-word">
+                    <div class="relative">
+                        <a href="{{ anime.mal_link }}" target="_blank" rel="noopener">{{ anime.title }}</a>
+                        {% if anime.cover_rel_url %}
+                        <div class="cover-container display-none">
+                            <img src="{{ url_for('static', filename=anime.cover_rel_url) }}">
+                        </div>
+                        {% endif %}
+                    </div>
+                </td>
+                <td>
+                    {{ edit_form.csrf_token(
+                        id="csrf_token-" + anime.anime_id | string,
+                        form="form-anime-" + anime.anime_id | string
+                        ) 
+                    }}
+                    {{ edit_form.anime_id(
+                        type="hidden", 
+                        value=anime.anime_id, id="anime_id-" + anime.anime_id | string,
+                        form="form-anime-" + anime.anime_id | string
+                        ) 
+                    }}
+
+
+                    {% if anime.wbijam %}
+                        {{ edit_form.wbijam_sub(
+                            id="wbijam_sub-" + anime.anime_id | string,
+                            form="form-anime-" + anime.anime_id | string
+                            ) 
+                        }}
+                    {% else %}
+                        <img 
+                            class="subscriptions--mark subscriptions--crossmark" 
+                            src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}" 
+                            alt="Brak"
+                        />
+                    {% endif %}
+                </td>
+                <td>
+                    {% if anime.anime_odcinki %}
+                        {{ edit_form.anime_odcinki_sub(
+                            id="anime_odcinki_sub-" + anime.anime_id | string,
+                            form="form-anime-" + anime.anime_id | string
+                            ) 
+                        }}
+                    {% else %}
+                        <img 
+                            class="subscriptions--mark subscriptions--crossmark" 
+                            src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}"
+                            alt="Brak"
+                        />
+                    {% endif %}
+                </td>
+                <td>
+                    {% if anime.okami_subs %}
+                        {{ edit_form.okami_subs_sub(
+                            id="okami_subs_sub-" + anime.anime_id | string,
+                            form="form-anime-" + anime.anime_id | string
+                            ) 
+                        }}
+                    {% else %}
+                        <img 
+                            class="subscriptions--mark subscriptions--crossmark" 
+                            src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}"
+                            alt="Brak"
+                        />
+                    {% endif %}
+                </td>
+                <td class="overflow-break-word">
+                    {% if anime.animesub | length %}
+                        {% for animesub in anime.animesub %}
+                            <div class="form-pair-row">
+                                <input 
+                                        type="checkbox" 
+                                        name="animesub_authors" 
+                                        value="{{ animesub.animesub_id }}" 
+                                        id="animesub_sub-{{ anime.anime_id }}-{{ animesub.animesub_id }}"
+                                        form="form-anime-{{ anime.anime_id }}"
+                                />
+                                <label class="min-width-0" for="animesub_sub-{{ anime.anime_id }}-{{ animesub.animesub_id }}" >
+                                    {{ animesub.author }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <img 
+                            class="subscriptions--mark subscriptions--crossmark" 
+                            src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}"
+                            alt="Brak"
+                        />
+                    {% endif %}
+                </td>
+                <td class="overflow-break-word" >
+                    {% if anime.animesub_forum | length %} 
+                        {% for animesub_forum in anime.animesub_forum %}
+                            <div class="form-pair-row">
+                                <input 
+                                        type="checkbox" 
+                                        name="animesub_forum_authors" 
+                                        value="{{ animesub_forum.animesub_forum_id }}"
+                                        id="animesub_forum_sub-{{ anime.anime_id }}-{{ animesub_forum.animesub_forum_id }}" 
+                                        form="form-anime-{{ anime.anime_id }}"
+                                />
+                                <label class="min-width-0" for="animesub_forum_sub-{{ anime.anime_id }}-{{ animesub_forum.animesub_forum_id }}">
+                                    {{ animesub_forum.author }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <img 
+                            class="subscriptions--mark subscriptions--crossmark" 
+                            src="{{ static_url_for('static', filename='general/media/icons/crossmark.svg') }}"
+                            alt="Brak" 
+                        />
+                    {% endif %}
+                </td>
+                <td>
+                    {{ edit_form.submit(
+                        class="btn btn-small",
+                        id="submit-" + anime.anime_id | string,
+                        form="form-anime-" + anime.anime_id | string
+                        ) 
+                    }}
+                </td>
+            </tr>
+            {% endfor %}
+    
+        </tbody>
+    </table>
+    {% endif %}    
+{%- endmacro %}

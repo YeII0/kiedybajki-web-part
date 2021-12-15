@@ -1,0 +1,140 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='admin/styles/admin_edit_anime.css') }}">
+{% endblock styles %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='admin/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='admin/scripts/animesub_forum.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+<h1>Edycja forum Animesub</h1>
+{% for season_info, season_list in ordered_seasons.items() %}
+    {{ season_table(season_info, season_list) }}
+{% endfor %}
+
+{% endblock content %}
+
+<!-- 
+Creating table for one season. Pass as arguments list of 
+anime from certain season and title for heading.
+-->
+{% macro season_table(season_info, season_list) -%}
+    {% if season_list|length %}
+        <!-- Hidden forms for every anime -->
+        {% for animesub_forum in season_list %}
+        <form class="display-none" id="form-anime-{{ animesub_forum.animesub_forum_id }}" action="{{ url_for('admin_bp.edit_animesub_forum') }}"
+            method="POST" novalidate>
+        </form>
+        {% endfor %}
+
+        <h2 class="mg-bt-0">{{ season_info[1] }}</h2>
+
+        <!-- Table with one season -->
+        <table class="admin-animesub-forum--tb" id="{{ season_info[0] }}">
+            <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Autor</th>
+                <th>URL</th>
+                <th>Cr_diff</th>
+                <th>Cr_diff_title</th>
+                <th>Edycja</th>
+                <th>Usuwanie</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for animesub_forum in season_list %}
+                    <tr>
+
+                        <!-- Anime title -->
+                        <td class="overflow-break-word">
+                            {{ animesub_forum.anime.title }}
+                        </td>
+
+                        <td>
+                            <!-- Hidden token -->
+                            {{ edit_form.csrf_token(
+                                        id="csrf_token-" + animesub_forum.animesub_forum_id | string,
+                                        form="form-anime-" + animesub_forum.animesub_forum_id | string
+                                        ) 
+                                    }}
+
+                            <!-- Hidden animesub_forum_id -->
+                            {{ edit_form.animesub_forum_id(
+                                        type="hidden", value=animesub_forum.animesub_forum_id, 
+                                        id="animesub_forum_id-" + animesub_forum.animesub_forum_id | string,
+                                        form="form-anime-" + animesub_forum.animesub_forum_id | string
+                                        ) }}
+
+                            <!-- Author -->
+                            {{ edit_form.author(
+                                                autocomplete="off", value=animesub_forum.author, 
+                                                id="author-" + animesub_forum.animesub_forum_id | string,
+                                                form="form-anime-" + animesub_forum.animesub_forum_id | string
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td>
+
+                        <!-- URL -->
+                        <td>
+                            {{ edit_form.source_link(
+                                                autocomplete="off", value=animesub_forum.source_link, 
+                                                id="source_link-" + animesub_forum.animesub_forum_id | string,
+                                                form="form-anime-" + animesub_forum.animesub_forum_id | string
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td> 
+                        
+                        <!-- Cr numbering diff -->
+                        <td>
+                            {{ edit_form.cr_numbering_diff(
+                                                autocomplete="off", value=animesub_forum.cr_numbering_diff, 
+                                                id="cr_numbering_diff-" + animesub_forum.animesub_forum_id | string,
+                                                form="form-anime-" + animesub_forum.animesub_forum_id | string,
+                                                min="0"
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td> 
+                        
+                        <!--Title without season/part number -->
+                        <td>
+                            {{ edit_form.cr_diff_title(
+                            autocomplete="off", value=animesub_forum.cr_diff_title | default('', true),
+                            id="cr_diff_title-" + animesub_forum.animesub_forum_id | string,
+                            form="form-anime-" + animesub_forum.animesub_forum_id | string,
+                            )
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td>
+
+                        <!-- Edit record button -->
+                        <td>
+                            {{ edit_form.submit(
+                                        class="btn btn-small",
+                                        id="submit-" + animesub_forum.animesub_forum_id | string,
+                                        form="form-anime-" + animesub_forum.animesub_forum_id | string
+                                        ) 
+                            }}                                                        
+                        </td>
+
+                        <!-- Remove record button -->
+                        <td>
+                            <form id="del-anime-form-{{ animesub_forum.animesub_forum_id }}" action="{{ url_for('admin_bp.delete_animesub_forum', animesub_forum_id=animesub_forum.animesub_forum_id) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                <input class="btn btn-small btn-danger" type="submit" value="Usuń" id="del-{{ animesub_forum.animesub_forum_id }}">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{%- endmacro %}

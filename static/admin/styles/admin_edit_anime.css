@@ -1,0 +1,180 @@
+/*
+Styles for all admin pages for editing viewing and editing record
+*/
+
+/* General
+========================================================================== */
+
+/* More width for content */
+main
+{
+    max-width: 150rem;
+}
+
+/* General table
+========================================================================== */
+table input[type="text"],
+table input[type="url"],
+table input[type="number"]
+{
+    width: 100%;
+}
+
+
+/* anime.html media queries
+========================================================================== */
+
+/* Adding specific table styles for smaller screens */
+@media screen and (max-width: 62.4375em)
+{
+    .admin-anime--tb td:nth-of-type(1)::before { content: "Tytuł"; }
+	.admin-anime--tb td:nth-of-type(2)::before { content: "Zmiana sezonu"; }
+    .admin-anime--tb td:nth-of-type(3)::before { content: "Mal URL"; }
+    .admin-anime--tb td:nth-of-type(4)::before { content: "URL nowej okładki"; }
+	.admin-anime--tb td:nth-of-type(5)::before { content: "Zatwierdzenie"; }
+    .admin-anime--tb td:nth-of-type(6)::before { content: "Usuwanie"; }  
+}
+
+/* Adding specific table styles for bigger screeens */
+@media screen and (min-width: 62.5em)
+{
+    /* Classes
+    ========================================================================== */
+
+    .admin-anime--tb
+    {
+        grid-template-columns: 1fr auto 0.70fr min-content auto auto;
+    }
+}
+
+/* wbijam.html media queries
+========================================================================== */
+
+/* Adding specific table styles for smaller screens */
+@media screen and (max-width: 62.4375em)
+{
+    .admin-wbijam--tb td:nth-of-type(1)::before { content: "Tytuł"; }
+    .admin-wbijam--tb td:nth-of-type(2)::before { content: "Tytuł\0000a0na\0000a0stronie"; }
+    .admin-wbijam--tb td:nth-of-type(3)::before { content: "URL"; }
+    .admin-wbijam--tb td:nth-of-type(4)::before { content: "Cr_diff"; }
+    .admin-wbijam--tb td:nth-of-type(5)::before { content: "Cr_diff_title"; }
+	.admin-wbijam--tb td:nth-of-type(6)::before { content: "Zatwierdzenie"; }
+    .admin-wbijam--tb td:nth-of-type(7)::before { content: "Usuwanie"; }  
+}
+
+/* Adding specific table styles for bigger screeens */
+@media screen and (min-width: 62.5em)
+{
+    /* Classes
+    ========================================================================== */
+
+    .admin-wbijam--tb
+    {
+        grid-template-columns: minmax(40rem, 1fr) 0.35fr 0.8fr min-content 0.35fr auto auto;
+    }
+}
+
+/* anime-odcinki.html media queries
+========================================================================== */
+
+/* Adding specific table styles for smaller screens */
+@media screen and (max-width: 62.4375em)
+{
+    .admin-anime-odcinki--tb td:nth-of-type(1)::before { content: "Tytuł"; }
+	.admin-anime-odcinki--tb td:nth-of-type(2)::before { content: "URL"; }
+	.admin-anime-odcinki--tb td:nth-of-type(3)::before { content: "Zatwierdzenie"; }
+    .admin-anime-odcinki--tb td:nth-of-type(4)::before { content: "Usuwanie"; }  
+}
+
+/* Adding specific table styles for bigger screeens */
+@media screen and (min-width: 62.5em)
+{
+    /* Classes
+    ========================================================================== */
+
+    .admin-anime-odcinki--tb
+    {
+        grid-template-columns: minmax(40rem, 1fr) 0.7fr auto auto;
+    }
+}
+
+/* okami-subs.html media queries
+========================================================================== */
+
+/* Adding specific table styles for smaller screens */
+@media screen and (max-width: 62.4375em)
+{
+    .admin-okami-subs--tb td:nth-of-type(1)::before { content: "Tytuł"; }
+    .admin-okami-subs--tb td:nth-of-type(2)::before { content: "Tytuł\0000a0na\0000a0stronie"; }
+	.admin-okami-subs--tb td:nth-of-type(3)::before { content: "URL"; }
+	.admin-okami-subs--tb td:nth-of-type(4)::before { content: "Zatwierdzenie"; }
+    .admin-okami-subs--tb td:nth-of-type(5)::before { content: "Usuwanie"; }  
+}
+
+/* Adding specific table styles for bigger screeens */
+@media screen and (min-width: 62.5em)
+{
+    /* Classes
+    ========================================================================== */
+
+    .admin-okami-subs--tb
+    {
+        grid-template-columns: minmax(40rem, 1fr) 0.7fr 0.6fr auto auto;
+    }
+}
+
+/* animesub.html media queries
+========================================================================== */
+
+/* Adding specific table styles for smaller screens */
+@media screen and (max-width: 62.4375em)
+{
+    .admin-animesub--tb td:nth-of-type(1)::before { content: "Tytuł"; }
+    .admin-animesub--tb td:nth-of-type(2)::before { content: "Tytuł\0000a0na\0000a0stronie"; }
+    .admin-animesub--tb td:nth-of-type(3)::before { content: "Autor"; }
+    .admin-animesub--tb td:nth-of-type(4)::before { content: "Cr_diff"; }
+    .admin-animesub--tb td:nth-of-type(5)::before { content: "Cr_diff_title"; }
+	.admin-animesub--tb td:nth-of-type(6)::before { content: "Zatwierdzenie"; }
+    .admin-animesub--tb td:nth-of-type(7)::before { content: "Usuwanie"; }  
+}
+
+/* Adding specific table styles for bigger screeens */
+@media screen and (min-width: 62.5em)
+{
+    /* Classes
+    ========================================================================== */
+
+    .admin-animesub--tb
+    {
+        grid-template-columns: minmax(40rem, 1fr) 0.8fr 0.35fr min-content 0.35fr auto auto;
+    }
+}
+
+/* animesub_forum.html media queries
+========================================================================== */
+
+/* Adding specific table styles for smaller screens */
+@media screen and (max-width: 62.4375em)
+{
+    .admin-animesub-forum--tb td:nth-of-type(1)::before { content: "Tytuł"; }
+    .admin-animesub-forum--tb td:nth-of-type(2)::before { content: "Autor"; }
+    .admin-animesub-forum--tb td:nth-of-type(3)::before { content: "URL"; }
+    .admin-animesub-forum--tb td:nth-of-type(4)::before { content: "Cr_diff"; }
+    .admin-animesub-forum--tb td:nth-of-type(5)::before { content: "Cr_diff_title"; }
+	.admin-animesub-forum--tb td:nth-of-type(6)::before { content: "Zatwierdzenie"; }
+    .admin-animesub-forum--tb td:nth-of-type(7)::before { content: "Usuwanie"; }  
+}
+
+/* Adding specific table styles for bigger screeens */
+@media screen and (min-width: 62.5em)
+{
+    /* Classes
+    ========================================================================== */
+
+    .admin-animesub-forum--tb
+    {
+        grid-template-columns: minmax(40rem, 1fr) 0.35fr 0.8fr min-content 0.35fr auto auto;
+    }
+}
+
+

@@ -1,0 +1,1686 @@
+/* z-index legend
+========================================================================== */
+
+/*
+z-index: 1 - th in table for desktop screen table layout
+z-index: 2 - .float-alert, cover-container and .menu-list for mobile layout
+*/
+
+/* General
+========================================================================== */
+
+:root
+{
+    /* 
+    Background colors 
+    */
+    --main-bg-color: #2f3437;
+    --lighter-bg-color: #3d4246;
+    --little-darker-bg-color: #2b3033;
+    --darker-bg-color: #272b2e;
+    --darkest-bg-color: #222527;
+    --row-highlight-bg-color: #4c4c54;
+
+    /* 
+    Text colors 
+    */
+    --main-text-color: #cfcfcf;
+    /* Use when readability in given background is better than with --main-text-color */
+    --white-text-color: white;
+    --muted-text-color: #aaaaaa;
+    --link-color: #7cb9ff;
+    --link-hover-color: #4099ff;
+
+    /* 
+    Info type colors. Use in elements borders. 
+    */
+    --error-color: #dc3545;
+    --warning-color: rgb(196, 196, 0);
+    --info-color: #7cb9ff;
+
+    /* 
+    Font sizes 
+    */
+    --small-font-size: 1.2rem;
+    --normal-font-size: 1.6rem;
+    --h1-font-size: 3.2rem;
+    --h2-font-size: 2.4rem;
+
+    --border-color: #aaaaaa;
+
+    /* 
+    Button states 
+    */
+    --loading-button-color: #aa972d;
+    --success-button-color: #43b581;
+    --danger-button-color: #821522;
+
+    /*
+    Rest
+    */
+    --checkbox-color: #25282b;
+    --checkbox-border-color: #383838;
+    --belt-notification-color: #2c58bb;
+}
+
+html
+{
+    /*
+    Better than fixed value. With relative font size we actually can use advantages of rem unit.
+    When font size in browser option will change also elements that use rem will change their values.
+    If font in html tag will be fixed values it will does not work like that.
+    */
+    font: 62.5% / 1.6 "Roboto", Arial, Helvetica, sans-serif;
+    color: var(--main-text-color);
+    /* Always visible scrollbar to prevent inconsistances */
+    overflow-y: scroll;
+}
+
+body
+{
+    position: relative;
+    min-height: 100vh;
+    margin: 0 auto;
+    /* Padding for footer. */
+    padding-bottom: 15rem;
+    font-size: var(--normal-font-size);
+    background: var(--img-crosses), var(--main-bg-color);
+}
+
+*, *::after, *::before
+{
+    box-sizing: border-box;
+}
+
+/* Spacing and typography
+========================================================================== */
+
+/*
+General spacing
+*/
+
+h3, 
+h4, 
+h5, 
+h6, 
+p, 
+ul, 
+ol, 
+dl, 
+figure
+{
+    margin: 0;
+    margin-bottom: 1.6rem;
+}
+
+section, 
+table
+{
+    margin: 0;
+    margin-bottom: 3.2rem;
+}
+
+
+/*
+Headers
+*/
+
+h1
+{
+    padding: 1.6rem 1.6rem;
+    margin: 0 -1.6rem 3.2rem -1.6rem;
+    background: var(--darker-bg-color);
+    font-size: var(--h1-font-size);
+    text-align: center;
+}
+
+h2
+{
+    padding: 1.6rem 1.6rem;
+    margin: 0 -1.6rem 1.6rem -1.6rem;
+    background: var(--darker-bg-color);
+    font-size: var(--h2-font-size);
+}
+
+/*
+Description list
+*/
+
+dt
+{
+    padding: 0.8rem 1.6rem;
+    margin: 0 -1.6rem 0.8rem -1.6rem;
+    background: var(--darker-bg-color);
+    font-weight: bold;
+}
+
+dd
+{
+    margin: 0;
+}
+
+/*
+Link styles
+*/
+
+a
+{
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:focus
+{
+  outline: none;
+  color: var(--link-hover-color);
+}
+
+a:hover
+{
+    color: var(--link-hover-color);
+}
+
+/*
+Figure
+*/
+
+figure
+{
+    display: inline-block;   
+}
+
+figure figcaption
+{
+    padding: 0.6rem;
+    font-size: var(--small-font-size);
+    color: var(--muted-text-color);
+    background: var(--darker-bg-color);
+}
+
+figure img
+{
+    display: block;
+    max-width: 100%;
+}
+
+/*
+Rest
+*/
+
+ul, 
+ol
+{
+    padding-left: 2rem;
+}
+
+small
+{
+    font-size: var(--small-font-size);
+}
+
+/* Table
+========================================================================== */
+
+table ul
+{
+    margin: 0;
+}
+
+table input,
+table select
+{
+    height: 2.5rem;
+    padding: 0 0.8rem;
+}
+
+table a
+{
+    display: inline-block;
+}
+
+
+/* Main content
+========================================================================== */
+
+main
+{
+    max-width: 80rem;
+    padding: 3.2rem 1.6rem;
+    /* width: 100%; */
+    margin: 0 auto;
+    background: var(--main-bg-color);
+}
+
+/* Navigation
+========================================================================== */
+
+/*
+Navigation bar
+*/
+
+nav
+{
+    background: var(--darker-bg-color);
+    height: 8rem;
+}
+
+.nav-content
+{
+    display: flex;
+    height: 100%;
+}
+
+.logo-link
+{
+    display: flex;
+    align-items: center;
+    padding: 0 1.6rem;
+}
+
+.logo-link img
+{
+    max-width: 100%;
+}
+
+#nav-input
+{
+    display: none;
+}
+
+
+/*
+Navigation menu
+*/
+
+nav ul
+{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+nav ul a
+{
+    display: block;
+    padding: 1.6rem;
+    text-decoration: none;
+    letter-spacing: 0.04rem;
+    color: var(--main-text-color);
+}
+
+nav ul a:focus, 
+nav ul a:hover
+{
+    color: var(--main-text-color);
+    background: var(--main-bg-color);
+}
+
+/*
+News animation
+*/
+
+.news-emphazise
+{
+    animation: news-animation 3s infinite;
+}
+
+@keyframes news-animation
+{
+    0%
+    {
+        text-shadow: unset;
+    }    
+    25%
+    {
+        text-shadow: 0 0 0.5em white;
+    }
+    50%
+    {
+        text-shadow: unset;
+    }
+}
+
+
+
+/* Footer
+========================================================================== */
+
+footer
+{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    bottom: 0;
+    padding: 1.6rem;
+    height: 15rem;
+    width: 100%;
+    background: var(--darker-bg-color);
+}
+
+/*
+Contact information
+*/
+
+footer address
+{
+    flex: 1;
+    font-style: normal;
+}
+
+footer ul
+{
+    padding: 0;
+    list-style-type: none;
+}
+
+footer li
+{
+    display: flex;
+    justify-content: center;
+    padding: 0 1.6rem;
+    margin-bottom: 1.6rem;
+}
+
+footer a[href^="https://discord"]
+{
+    display: inline-flex;
+    align-items: center;
+}
+
+footer a[href^="https://discord"]::before
+{
+    content: "";
+    width: 3.2rem;
+    height: 3.2rem;
+    margin-right: 0.8rem;
+    background: var(--img-discord) 0 0 / contain no-repeat;
+}
+
+footer a[href^="mailto"]
+{
+    display: inline-flex;
+    align-items: center;
+}
+
+footer a[href^="mailto"]::before
+{
+    content: "";
+    width: 3.2rem;
+    height: 3.2rem;
+    margin-right: 0.8rem;
+    background: var(--img-mail) 0 0 / contain no-repeat;
+}
+
+footer .muted
+{
+    display: block;
+    text-align: center;
+}
+
+/* Forms
+========================================================================== */
+
+/*
+General
+*/
+
+button, 
+input, 
+textarea,
+select
+{
+    height: 5rem;
+    margin: 0;
+    padding: 0 1.6rem;
+    font-family: inherit;
+    color: var(--main-text-color);
+    background: var(--darker-bg-color);
+    border: none;
+    outline: none;
+    border-radius: 0;
+    
+}
+
+input:focus, 
+textarea:focus,
+select:focus
+{
+    background: var(--darkest-bg-color);
+}
+
+input[type="submit"]
+{
+    background: var(--darker-bg-color);
+}
+
+button:active, input[type="submit"]:active
+{
+    background: var(--darkest-bg-color);
+}
+
+button, input[type="submit"]
+{
+    cursor: pointer;
+}
+
+/*
+Ridding of spinners from number input
+*/
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/*
+Checkbox
+*/
+
+/* Ridding of default checkbox */
+input[type="checkbox"] 
+{
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    border: none;
+    /* Overriding Edge 2px radius */
+    border-radius: 0;
+}
+
+input[type="checkbox"] 
+{
+    position: relative;
+    width: 1.6rem;
+    height: 1.6rem;
+    /* Adjusts the position of the checkboxes on the text baseline */ 
+    vertical-align: -0.1rem;
+    border: 1px solid var(--checkbox-border-color);
+    background: var(--checkbox-color);
+}
+
+input[type="checkbox"]::before 
+{
+    position: absolute;
+    top: -0.1rem;
+    left: -0.1rem;
+    display: block;
+    content: "";
+    background: var(--img-checkmark) center center / 1rem 1rem no-repeat;
+    /* 
+    It's not working properly as flex item with .form-pair-row when width is set to 100% of input container
+    and when second element (label) content takes full first line space or more.
+    So width is set to the same fixed value as a parent (checkbox input).
+    */
+    width: 1.6rem;
+    height: 1.6rem;    
+    visibility: hidden;
+}
+
+input[type="checkbox"]:checked::before 
+{
+    /* Use `visibility` instead of `display` to avoid recalculating layout */
+    visibility: visible;
+    animation: 0.2s checked;
+}
+
+@keyframes checked
+{
+    from
+    {
+        transform: scale(1.4);
+    }
+    to
+    {
+        transform: scale(1);
+    }
+}
+
+input[type="checkbox"]:disabled 
+{
+    opacity: 0.40;
+}
+
+/*
+Autocomplete
+*/
+
+/* Change autocomplete styles in Chrome, Edge and Safari */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill,
+input:-webkit-autofill:hover,
+textarea:-webkit-autofill:hover,
+select:-webkit-autofill:hover
+{
+    -webkit-text-fill-color: var(--main-text-color) !important;
+    -webkit-box-shadow: 0 0 0px 5rem var(--darker-bg-color) inset !important;
+    background-color: var(--darker-bg-color) !important;
+    background-clip: content-box !important;    
+    caret-color: white;
+    /* Setting Edge border-radius to 0 */
+    border-radius: 0;
+}
+
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill:active
+{
+    -webkit-box-shadow: 0 0 0px 5rem var(--darkest-bg-color) inset !important;
+    background-color: var(--darkest-bg-color) !important;
+}
+
+/* Removes default autocomplete styles from Firefox */
+input {
+  filter: none;
+}
+
+
+/* General utility classes
+========================================================================== */
+
+.divider
+{
+    margin: 0 -1.6rem 0rem -1.6rem;
+    border: 0.1rem solid var(--darker-bg-color);
+}
+
+
+/* Cover classes
+========================================================================== */
+
+.cover-container
+{
+    position: absolute;
+    width: 22.5rem;
+    max-width: 100%;
+    z-index: 2;
+}   
+
+.cover-container img
+{
+    max-width: 100%;
+    border-radius: 0.8rem;
+}
+
+
+/* Layout related classes
+========================================================================== */
+
+.darker-container
+{
+    background: var(--darker-bg-color);
+    margin: 0 -1.6rem 0 -1.6rem;
+    padding: 0 1.6rem 0 1.6rem;
+}
+
+.block
+{
+    display: block;
+}
+
+.inline-block
+{
+    display: inline-block;
+}
+
+.display-none
+{
+    display: none;
+}
+
+.invisible
+{
+    visibility: hidden;
+}
+
+.relative
+{
+    position: relative;
+}
+
+/*
+Flex classes
+*/
+
+.display-flex
+{
+    display: flex
+}
+
+.display-inline-flex
+{
+    display: inline-flex;
+}
+
+.flex-justify-left
+{
+    justify-content: flex-start;
+}
+
+.flex-wrap
+{
+    flex-wrap: wrap;
+}
+
+/* Applying margins for all elements except last one */
+.flex-justify-left *:nth-child(n):nth-last-child(n + 2)
+{
+    margin-right: 1.6rem;
+}
+
+.flex-1
+{
+    flex: 1;
+}
+
+/*
+Rest
+*/
+
+.vertical-center
+{
+    align-items: center;
+}
+
+
+/* Word break related classes
+========================================================================== */
+
+.overflow-break-word
+{
+    overflow-wrap: break-word;
+}
+
+/* 
+This is need to break-word works in flex items, cuz initial value of min-width is auto.
+It means that the min-width in equal to the longest word. 
+For example for initial min-width for block elements is 0px so it don't need this line.
+*/
+.min-width-0
+{
+     min-width: 0;
+}
+
+/* Typography related classes
+========================================================================== */
+
+.center-text
+{
+    text-align: center;
+}
+
+.std-font-size
+{
+    font-size: 1.6rem;
+}
+
+.muted
+{
+    color: var(--muted-text-color);
+}
+
+.emote-in-text
+{
+    height: 2.5rem;
+    vertical-align: top;
+}
+
+.header
+{
+    background: var(--darker-bg-color);
+    margin: 0 -1.6rem 1.6rem -1.6rem;
+    padding: 1.6rem;
+    font-weight: bold;
+}
+
+.header.small-header
+{
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    margin-bottom: 0.8rem;
+    font-size: var(--normal-font-size);
+}
+
+.label
+{
+    display: inline-block;
+    padding: 0 0.8em;
+    border-radius: 0.5em;
+    margin-left: 0.4em;    
+}
+
+.label.light
+{
+    background-color: var(--lighter-bg-color);    
+}
+
+/* Button classes
+========================================================================== */
+/*
+Some of the .btn related classes has increased specificity by repeating class
+like .btn.btn-loading.btn-loading, this is because we want to override .btn:hover selector
+from media query for coarse pointers.
+*/
+
+.btn
+{
+    display: inline-flex;
+    align-items: center;
+    height: 5rem;
+    margin: 0;
+    padding: 0 1.6rem;
+    color: var(--main-text-color);
+    background: var(--darker-bg-color);
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.btn:disabled
+{
+    opacity: 0.7;
+    cursor: auto;
+}
+
+.btn.enabled-transition
+{
+    opacity: 1;
+    transition: opacity 0.6s; 
+}
+
+.btn:hover,
+.btn:focus, 
+.btn:active
+{
+    color: var(--main-text-color);
+}
+
+.btn:active
+{
+    background: var(--darkest-bg-color);
+    color: var(--white-text-color);
+}
+
+/* 
+Used in javascript. 
+Added on touchstart event and removed on touchend.
+Indicates clicks on touch screens.
+*/
+.btn.touch
+{
+    background: var(--darkest-bg-color);
+    color: var(--white-text-color);
+}
+
+/*
+Used in javascript to add transition animation between success/danger 
+states and default style state.
+*/
+.btn.btn-transition-default
+{
+    color: var(--main-text-color);
+    background: var(--darker-bg-color);
+    transition: all 0.3s ease, color 0.3s ease;
+}
+
+.btn.btn-darker
+{
+    background: var(--darkest-bg-color);
+    color: var(--white-text-color);
+}
+
+.btn.btn-success
+{
+    background: var(--success-button-color);
+    color: var(--white-text-color);
+}
+
+.btn.btn-danger
+{
+    background: var(--danger-button-color);
+    color: var(--white-text-color);
+}
+
+/*
+This class need to be after btn-danger and btn-success cuz
+we want to be able to override them 
+when loading occurs while element still have one of this classes.
+Using this class in javascript is handled like this: 
+class is added while loading smth and after that removed. 
+It prevents overriding classes mentioned above.
+*/
+.btn.btn-loading
+{
+    position: relative;
+    background-color: var(--loading-button-color);
+    background-image: linear-gradient(90deg, var(--loading-button-color),#837423, var(--loading-button-color), #837423);
+    background-size: 300% 100%;
+    color: var(--white-text-color);
+    animation: 1.5s linear infinite loading;
+}
+
+@keyframes loading
+{
+    from
+    {
+        background-position: 100% 0;
+    }
+    to
+    {
+        background-position: 0 0;
+    }
+}
+
+.btn.btn-small
+{
+    height: 2.5rem;
+    padding: 0 0.8rem;
+}
+
+/* Form related classes
+========================================================================== */
+
+.input-block
+{
+    display: block;
+    width: 100%;
+}
+
+/*
+Select
+*/
+
+/* Use with div as a wrapper for select to add custom style */
+.select-wrapper
+{
+    position: relative;
+}
+
+.select-wrapper select
+{
+    /* Removing default os styles from select */
+    -webkit-appearance: none;
+    appearance: none;    
+    width: 100%;
+    display: block;
+    /* Padding for arrow */
+    padding-right: 5.5rem;
+}
+
+.select-wrapper::after {
+    content: "▼";
+    font-size: 1.5rem;
+    top: 1.3rem;
+    right: 2rem;
+    position: absolute;
+}
+
+
+/* Use .select-wrapper.select-small with div wrapper for small selects to add custom styles */
+.select-wrapper.select-small select
+{
+    height: 2.5rem;
+    /* Padding for arrow */
+    padding-right: 3rem;    
+}
+
+/* Adjusting arrow for small 2.5 height select */
+.select-wrapper.select-small::after
+{
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 1rem;
+}
+
+/*
+Container which center vertically in row pairs of input-label. First element should be input and second label.
+Input will have initial width if specified, if not will be have as little width as much content need. 
+Label with take all free space.
+*/
+
+.form-pair-row
+{
+    display: flex;
+    align-items: center;
+}
+
+.form-pair-row *:first-child
+{
+    margin-right: 1.6rem;
+}
+
+/*
+Validation error classes
+*/
+
+/* Error message container */
+.validation-error
+{
+    color: var(--error-color);
+    font-size: var(--small-font-size);
+    margin-top: 0.4rem;
+}
+
+/* Styling for invalid inputs */
+.invalid-input
+{
+    outline: 0.2rem solid var(--error-color);
+}
+
+
+/* Border classes
+========================================================================== */
+
+.border-bt
+{
+    border-bottom: 0.2rem solid var(--darker-bg-color);
+}
+
+.border-top
+{
+    border-top: 0.2rem solid var(--darker-bg-color);
+}
+
+.border-left
+{
+    border-left: 0.2rem solid var(--darker-bg-color);
+}
+
+.border-right
+{
+    border-right: 0.2rem solid var(--darker-bg-color);
+}
+
+/* Margin classes
+========================================================================== */
+
+.mg-top-0
+{
+    margin-top: 0;
+}
+
+.mg-left-0
+{
+    margin-left: 0;
+}
+
+.mg-bt-0
+{
+    margin-bottom: 0;
+}
+
+.mg-left-0
+{
+    margin-left: 0;
+}
+
+.mg-top-4
+{
+    margin-top: 0.4rem;
+}
+
+.mg-bt-4
+{
+    margin-bottom: 0.4rem;
+}
+
+.mg-left-4
+{
+    margin-left: 0.4rem;
+}
+
+.mg-right-4
+{
+    margin-right: 0.4rem;
+}
+
+.mg-top-8
+{
+    margin-top: 0.8rem;
+}
+
+.mg-bt-8
+{
+    margin-bottom: 0.8rem;
+}
+
+.mg-left-8
+{
+    margin-left: 0.8rem;
+}
+
+.mg-right-8
+{
+    margin-right: 0.8rem;
+}
+
+.mg-top-16
+{
+    margin-top: 1.6rem;
+}
+
+.mg-bt-16
+{
+    margin-bottom: 1.6rem;
+}
+
+.mg-left-16
+{
+    margin-left: 1.6rem;
+}
+
+.mg-right-16
+{
+    margin-right: 1.6rem;
+}
+
+.mg-top-24
+{
+    margin-top: 2.4rem;
+}
+
+.mg-bt-24
+{
+    margin-bottom: 2.4rem;
+}
+
+.mg-left-24
+{
+    margin-left: 2.4rem;
+}
+
+.mg-right-24
+{
+    margin-right: 2.4rem;
+}
+
+.mg-top-32
+{
+    margin-top: 3.2rem;
+}
+
+.mg-bt-32
+{
+    margin-bottom: 3.2rem;
+}
+
+.mg-left-32
+{
+    margin-left: 3.2rem;
+}
+
+.mg-right-32
+{
+    margin-right: 3.2rem;
+}
+
+/* Padding classes
+========================================================================== */
+
+.pd-top-4
+{
+    padding-top: 0.4rem;
+}
+
+.pd-top-8
+{
+    padding-top: 0.8rem;
+}
+
+.pd-top-16
+{
+    padding-top: 1.6rem;
+}
+
+.pd-top-32
+{
+    padding-top: 3.2rem;
+}
+
+.pd-bt-4
+{
+    padding-bottom: 0.4rem;
+}
+
+.pd-bt-8
+{
+    padding-bottom: 0.8rem;
+}
+
+.pd-bt-16
+{
+    padding-bottom: 1.6rem;
+}
+
+.pd-bt-32
+{
+    padding-bottom: 3.2rem;
+}
+
+.pd-left-4
+{
+    padding-left: 0.4rem;
+}
+
+.pd-left-8
+{
+    padding-left: 0.8rem;
+}
+
+.pd-left-16
+{
+    padding-left: 1.6rem;
+}
+
+.pd-left-32
+{
+    padding-left: 3.2rem;
+}
+
+.pd-right-4
+{
+    padding-right: 0.4rem;
+}
+
+.pd-right-8
+{
+    padding-right: 0.8rem;
+}
+
+.pd-right-16
+{
+    padding-right: 1.6rem;
+}
+
+.pd-right-32
+{
+    padding-right: 3.2rem;
+}
+
+/* Alert classes
+========================================================================== */
+
+
+.float-alert
+{
+    position: fixed;
+    bottom: 1.6rem;
+    right: 1.6rem;
+    padding: 1.6rem;
+    margin-left: 1.6rem;
+    border: 0.2rem solid transparent;
+    background: var(--darker-bg-color);
+    z-index: 2;
+    transform: scale(0.8);
+}
+
+.float-alert.show-alert
+{
+    transform-origin: bottom right;
+    transform: scale(1);
+    transition: transform 0.25s cubic-bezier(.35,1.05,.65,1.38);
+}
+
+
+.float-alert.hide-alert
+{
+    opacity: 0;
+    transform-origin: bottom right;
+    transform: scale(0.6);
+    transition: all 0.25s ease;
+}
+
+/* Do also version for main content 3.2rem padding in media query */
+.alert
+{
+    padding: 1.6rem;
+    margin: 0 -1.6rem 1.6rem -1.6rem;
+    background: var(--darker-bg-color);
+    border: 0.2rem solid transparent;
+}
+
+.alert.alert-info,
+.float-alert.alert-info
+{
+    border: 0.2rem solid var(--info-color);
+}
+
+.alert.alert-warning,
+.float-alert.alert-warning
+{
+    border: 0.2rem solid var(--warning-color);
+}
+
+.alert.alert-error,
+.float-alert.alert-error
+{
+    border: 0.2rem solid var(--error-color);
+}
+
+
+/* One purpose classes
+========================================================================== */
+.belt-notification 
+{
+    position: relative;
+    text-align: center;
+    width: 100%;
+    color: white;
+    background-color: var(--belt-notification-color);
+    padding: 0.4rem 3.6rem 0.4rem 0.4rem;
+}
+
+.belt-notification a 
+{
+    display: inline-block;
+    width: 100%;
+    color: white;
+}
+
+.belt-notification > form > div 
+{
+    content: 'x';
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    right: 0;
+    padding: 0.4rem 1.2rem;
+    cursor: pointer;
+}
+
+.belt-notification > form > div:hover {
+    text-shadow: 0 0 0.5em white;
+}
+
+/* Media queries
+========================================================================== */
+
+/* Navigation for small screens with dropdown list will be used. */
+@media screen and (max-width: 74.9375em)
+{
+    /*
+    Navigation bar
+    */
+
+    .nav-content
+    {
+        justify-content: space-between;
+    }
+
+    .menu-toggle
+    {
+        padding: 0 1.6rem;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .menu-toggle:hover
+    {
+        background: var(--main-bg-color);
+    }
+
+    .menu-toggle img
+    {
+        max-width: 100%;
+    }
+
+    /*
+    Toggled navigation menu
+    */
+
+    .menu-list
+    {
+        display: none;
+    }
+
+    #nav-input:checked ~ .menu-list
+    {
+        display: block;
+    }
+
+    /* Setting menu-list position to absolute. */
+    .menu-list
+    {
+        width: 100%;
+        position: absolute;
+        top: 8rem;
+        background: var(--darker-bg-color);
+        /* Prevent overlapping by other elements; */
+        z-index: 2;
+    }    
+}
+
+/* Navigation without dropdown list for wider screens. Menu items will be in one line. */
+@media screen and (min-width: 75em)
+{
+    .logo-link img
+    {
+        max-width: initial;
+    }
+
+    .nav-content
+    {
+        max-width: 120rem;
+        margin: 0 auto;
+    }
+
+    /* Not needed in desktop layout. */
+    .menu-toggle
+    {
+        display: none;
+    }
+
+    /* With flex we don't need to change childs divs to inline-block to allow be them in one line. */
+    .menu-list
+    {
+        display: flex;
+        width: 100%;
+    }
+
+    /* Height must be fixed or relative to stretch vertically flex items. */
+    nav ul
+    {
+        display: flex;
+        height: 100%;
+    }
+
+    /* This will be stretched vertically to fill container thankfully flexbox. */
+    nav li
+    {
+        display: inline-block;
+    }
+
+    nav ul a
+    {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Aligning second part of menu to right. */
+    .menu-list > ul:last-of-type
+    {
+        margin-left: auto;
+    }
+}
+
+/*
+Footer for wider screens with 2 rows.
+First row with discord and e-mail info and second with autor info.
+*/
+@media screen and (min-width: 31.25em)
+{
+
+    body
+    {
+        padding-bottom: 10rem;
+    }
+
+    footer
+    {
+        height: 10rem;
+    }
+
+    footer ul
+    {
+        display: flex;
+    }
+
+    footer li
+    {
+        flex: 1;
+        margin: 0;
+    }
+
+    footer li:first-of-type
+    {
+        justify-content: flex-end;
+    }
+
+    footer li:last-of-type
+    {
+        justify-content: flex-start;
+    }
+}
+
+/* 3.2rem padding for main content for wider screens */
+@media screen and (min-width: 37.5em)
+{
+
+    main
+    {
+        padding: 3.2rem;
+    }
+
+    /* Adjusting negative vertical margins and paddings to 3.2rem main padding */
+    h1, h2, dt, .alert, .divider, .darker-container, .header
+    {
+        padding-left: 3.2rem;
+        padding-right: 3.2rem;
+        margin-left: -3.2rem;
+        margin-right: -3.2rem;
+    }
+
+    .float-alert
+    {
+        bottom: 3.2rem;
+        right: 3.2rem;
+        padding: 3.2rem;
+        margin-left: 3.2rem;           
+    }
+}
+
+/* 
+Small screen core of table layout.
+Some code is to specific and need to be adjusted for every table. 
+This code is commented and marked in comment as ### TABLE SPECIFIC ###.
+*/
+@media screen and (max-width: 62.4375em)
+{
+
+    /* Force table to not be like tables anymore */
+    table, thead, tbody, th, td, tr 
+    { 
+        display: block; 
+    }
+
+    table
+    {
+        margin-left: -1.6rem;
+        margin-right: -1.6rem;
+    }
+    
+	/* Hide table headers (but not display: none;, for accessibility) */
+    thead tr 
+    { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+    }
+    
+    /* Behave  like a "row" */
+    td
+    { 
+		position: relative;
+        padding-left: 50%;
+        /* Counteract to negative margin on table */
+        padding-right: 1.6rem;
+    }
+    
+    /* Table headers */
+    td::before
+    {
+        position: absolute;
+        white-space: nowrap;
+        top: 0.8rem;
+        left: 1.6rem;
+        font-weight: bold;
+    }
+
+    /*
+    ### TABLE SPECIFIC ### 
+    Label the data.
+    Create unique class for table and add labels which you need.
+    Remember about adding it in correct media query!
+    Example below.
+    */
+
+    /* 
+    .anime-list--tb td:nth-of-type(1)::before { content: "Tytuł"; }
+	.anime-list--tb td:nth-of-type(2)::before { content: "Wbijam"; }
+	.anime-list--tb td:nth-of-type(3)::before { content: "A-o"; }
+	.anime-list--tb td:nth-of-type(4)::before { content: "Okami-subs"; }
+	.anime-list--tb td:nth-of-type(5)::before { content: "Animesub"; }
+    .anime-list--tb td:nth-of-type(6)::before { content: "Forum Animesub"; }  
+    */
+
+    tr
+    {
+        margin-bottom: 3.2rem;
+    }
+
+    td
+    {
+        padding-top: 0.8rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 0.2rem solid var(--little-darker-bg-color);
+    }    
+
+    tr:nth-of-type(even) td
+    {
+        background: var(--little-darker-bg-color);
+        border-bottom: 0.2rem solid var(--main-bg-color);
+    }
+
+    /* Remove border-bottom for last "row" for every set of data */
+    td:last-of-type
+    {
+        border: none;
+    }
+}
+
+/* 
+Big screen core of table layout.
+Some code is to specific and need to be adjusted for every table. 
+This code is commented and marked in comment as ### TABLE SPECIFIC ###.
+*/
+@media screen and (min-width: 62.5em)
+{
+
+    /* Layout
+    ========================================================================== */
+
+    /*
+    Removing markups from grid layout. 
+    DOOM tree will act as this element does not exist and its childrens take up its place in tree. 
+    It will be still in DOOM tree but will pretend that are not there.
+    It allows to properly used td as columns by grid layout.
+    */
+    thead, tbody, tr
+    {
+        display: contents;
+    }
+
+    table
+    {
+        display: grid;
+
+        /* Negative margins to horizontally stick to the edges of main element */
+        margin-left: -32px;
+        margin-right: -32px;
+        border: 0.2rem solid var(--darker-bg-color);
+    }
+
+    /* 
+    ### TABLE SPECIFIC ###
+    Create unique class for table and set grid template as you desired.
+    Remember about adding it in correct media query!  
+    Example below.       
+    */
+    /* 
+    .anime-list--tb
+    {
+        .anime-list--tb grid-template-columns: 1fr repeat(5, auto);
+    } 
+    */
+
+    th
+    {
+        position: sticky;
+        /* Setted cuz it was overlapped by select relative wrapper */
+        z-index: 1;
+        top: 0;        
+        background: var(--darker-bg-color);
+        font-weight: bold;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    th, td
+    {
+        padding: 1rem 1.6rem;
+    }
+
+    /* Little darker background for every even row for better readability */
+    tbody tr:nth-child(even) td
+    {
+        background: var(--little-darker-bg-color);
+    }
+
+    th:first-child, td:first-child
+    {
+        /*
+        Added only for first and last td and th in every row.
+        Needed to counteract negative margins cuz without it content will touch to edges of main element.
+        */
+        padding-left: 3.2rem;
+    }
+
+    th:last-child, td:last-child
+    {
+        /*
+        Added only for first and last td and th in every row.
+        Needed to counteract negative margins cuz without it content will touch to edges of main element.
+        */        
+        padding-right: 3.2rem;
+    }
+
+}
+
+/* Query for devices with touch pointing type */
+@media screen and (pointer: coarse)
+{
+    /* 
+    Don't want hover effect on touch pointing devices. 
+    Cuz when element is clicked is still hovered after click as long as something else will not be clicked.
+    */
+    .menu-toggle:hover
+    {
+        background: inherit;
+    }  
+
+    /* 
+    Removing flash effect after clicking element on mobile devices with touch pointer.
+    Tested on iOS Safari and iOS Chrome.  
+    */
+    input, 
+    button, 
+    select, 
+    textarea, 
+    label, 
+    a
+    {
+        -webkit-tap-highlight-color: transparent;
+    }    
+}

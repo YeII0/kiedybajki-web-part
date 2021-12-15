@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='admin/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='admin/scripts/add_anime.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+<form id="main-form" method="POST" action="{{ url_for('admin_bp.add_anime_submit') }}" novalidate>
+    {{ add_form.hidden_tag() }}
+    <h1>Dodawanie anime</h1>
+    <section>
+        <div class="mg-bt-8">
+            {{ add_form.title.label(class="block mg-bt-4") }}
+            {{ add_form.title(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-8">
+            {{ add_form.season.label(class="block mg-bt-4") }}
+                <div class="select-wrapper">
+                    {{ add_form.season(class="input-block") }}
+                </div>
+            <div class="validation-error" id="season_error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-16">
+            {{ add_form.mal_link.label(class="block mg-bt-4") }}
+            {{ add_form.mal_link(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-16">
+            {{ add_form.cover_link.label(class="block mg-bt-4") }}
+            {{ add_form.cover_link(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="form-pair-row mg-bt-16">
+            {{ add_form.submit(class="btn") }}
+            <a class="btn" href="{{ url_for('admin_bp.menu') }}">Powrót</a>
+        </div>
+    </section>
+
+</form>
+{% endblock content %}

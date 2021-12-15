@@ -1,0 +1,8 @@
+**/.vscode
+**/venv
+**/__pycache__
+/migrations
+**/logs
+.history
+test.py
+animechecker/static/general/media/anime_covers

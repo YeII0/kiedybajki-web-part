@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block meta_description %}
+<meta name="description"
+    content="Ustawienia konta. W tym miejscu dodajesz lub zmieniasz webhooka discorda.">
+{% endblock meta_description %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='users/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='users/scripts/account.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+<h1>Konto</h1>
+<form id="account-form" method="POST" action="{{ url_for('users_bp.account_info_submit') }}" novalidate>
+    {{ form_account_info.csrf_token(id="account_info_csrf_token") }}
+    <section class="mg-bt-32">
+        <h2>Informacje o koncie</h2>
+        <div class="mg-bt-8">
+            {{ form_account_info.username.label(class="block mg-bt-4") }}
+            {{ form_account_info.username(class="input-block", minlength="2", maxlength="20") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-16">
+            {{ form_account_info.email.label(class="block mg-bt-4") }}
+            {{ form_account_info.email(class="input-block") }}
+        <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+        {{ form_account_info.submit(
+            id="account_info_submit", 
+            class="btn block mg-bt-16"
+            ) 
+        }}
+    </section>
+</form>
+
+<form id="settings-form" method="POST" action="{{ url_for('users_bp.account_settings_submit') }}" novalidate>
+    {{ form_account_settings.csrf_token(id="account_settings_csrf_token") }}
+    <section>
+        <h2>Ustawienia</h2>
+        <div class="mg-bt-8">
+            {{ form_account_settings.webhook.label(class="block mg-bt-4") }}
+            {{ form_account_settings.webhook(class="input-block") }}
+            <small class="block muted mg-top-4">
+                Za pomocą webhooka będą wysyłane powiadomienia o nowych odcinkach.
+                Instrukcję o tym jak stworzyć webhooka można znaleźć
+                <a href="{{ url_for('main_bp.about') }}#creating_webhook" target="_blank" rel="noopener">tutaj</a>.
+                Po stworzeniu weebhoka jego URL należy wkleić w powyższym polu i kliknąć przycisk
+                <em>Zaktualizuj</em>.
+            </small
+            ><div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-16">
+            <div class="form-pair-row ">
+                {{ form_account_settings.are_modules_independent(class="form-check-input") }}
+                {{ form_account_settings.are_modules_independent.label(class="form-check-label") }}
+            </div>
+            <small class="block muted mg-top-4">
+                Wysyłane będą powiadomienia o nowych odcinkach nawet jeżeli na innych
+                obserwowanych stronach z anime
+                już są nowsze.
+            </small>
+        </div>
+        <div class="mg-bt-16">
+            <div class="form-pair-row ">
+                {{ form_account_settings.is_db_entry_notification(class="form-check-input") }}
+                {{ form_account_settings.is_db_entry_notification.label(class="form-check-label") }}
+            </div>
+            <small class="block muted mg-top-4">
+                Gdy zostanie dodany nowy tytuł do bazy zostaniesz o tym powiadomiony.
+                Powiadomienia mogą być wysyłane na <em>webhooka</em> podanego powyżej, 
+                na który są już wysyłane powiadomienia o nowych odcinkach subskrybowanych tytułów.
+                Opcjonalnie można podać dodatkowego <em>webhooka</em> w polu które pojawi się po zaznaczeniu opcji.
+                Będzie on służył wyłącznie do wysyłania powiadomień o nowych tytułach dodanych do bazy.
+            </small>
+        </div>
+        {% if form_account_settings.is_db_entry_notification.data %}
+            <div class="mg-bt-16">
+                {{ form_account_settings.extra_webhook.label(class="block mg-bt-4") }}
+                {{ form_account_settings.extra_webhook(class="input-block") }}
+                <div class="validation-error">&ZeroWidthSpace;</div>
+            </div>
+        {% else %}
+            <div class="mg-bt-16 display-none">
+                {{ form_account_settings.extra_webhook.label(class="block mg-bt-4") }}
+                {{ form_account_settings.extra_webhook(class="input-block") }}
+                <div class="validation-error">&ZeroWidthSpace;</div>
+            </div>
+        {% endif %}
+ 
+        {{ form_account_settings.submit(
+            id="account_settings_submit", 
+            class="btn block mg-bt-16"
+            ) 
+        }}
+    </section>
+</form>
+{% endblock content %}

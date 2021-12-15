@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ static_url_for('static', filename='admin/styles/admin_edit_anime.css') }}">
+{% endblock styles %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='admin/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='admin/scripts/ao.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+
+<h1>Edycja Anime&#8209;odcinki</h1>
+{% for season_info, season_list in ordered_seasons.items() %}
+    {{ season_table(season_info, season_list) }}
+{% endfor %}
+
+{% endblock content %}
+
+<!-- 
+Creating table for one season. Pass as arguments list of 
+anime from certain season and title for heading.
+-->
+{% macro season_table(season_info, season_list) -%}
+    {% if season_list|length %}
+        <!-- Hidden forms for every anime -->
+        {% for anime_odcinki in season_list %}
+        <form class="display-none" id="form-anime-{{ anime_odcinki.anime_id }}" action="{{ url_for('admin_bp.edit_anime_odcinki') }}"
+            method="POST" novalidate>
+        </form>
+        {% endfor %}
+
+        <h2 class="mg-bt-0">{{ season_info[1] }}</h2>
+
+        <!-- Table with one season -->
+        <table class="admin-anime-odcinki--tb" id="{{ season_info[0] }}">
+            <thead>
+                <tr>
+                    <th>Tytuł</th>
+                    <th>URL</th>
+                    <th>Zatwierdzenie</th>
+                    <th>Usuwanie</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for anime_odcinki in season_list %}
+                    <tr>
+
+                        <!-- Anime title -->
+                        <td class="overflow-break-word">
+                            {{ anime_odcinki.anime.title }}
+                        </td>
+
+                        <td>
+                            <!-- Hidden token -->
+                            {{ edit_form.csrf_token(
+                                        id="csrf_token-" + anime_odcinki.anime_id | string,
+                                        form="form-anime-" + anime_odcinki.anime_id | string
+                                        ) 
+                                    }}
+
+                            <!-- Hidden anime_id -->
+                            {{ edit_form.anime_id(
+                                        type="hidden", value=anime_odcinki.anime_id, 
+                                        id="anime_id-" + anime_odcinki.anime_id | string,
+                                        form="form-anime-" + anime_odcinki.anime_id | string
+                                        ) }}
+
+                            <!-- Source link -->
+                            {{ edit_form.source_link(
+                                                autocomplete="off", value=anime_odcinki.source_link, 
+                                                id="source_link-" + anime_odcinki.anime_id | string,
+                                                form="form-anime-" + anime_odcinki.anime_id | string
+                                                ) 
+                            }}
+                            <div class="validation-error display-none"></div>
+                        </td>
+
+                        <!-- Edit record button -->
+                        <td>
+                            {{ edit_form.submit(
+                                        class="btn btn-small",
+                                        id="submit-" + anime_odcinki.anime_id | string,
+                                        form="form-anime-" + anime_odcinki.anime_id | string
+                                        ) 
+                            }}                                                        
+                        </td>
+
+                        <!-- Remove record button -->
+                        <td>
+                            <form id="del-anime-form-{{ anime_odcinki.anime_id }}" action="{{ url_for('admin_bp.delete_anime_odcinki', anime_id=anime_odcinki.anime_id) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                <input class="btn btn-small btn-danger" type="submit" value="Usuń" id="del-{{ anime_odcinki.anime_id }}">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{%- endmacro %}

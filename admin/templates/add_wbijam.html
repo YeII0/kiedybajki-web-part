@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block script %}
+    
+    <script src="{{ static_url_for('static', filename='admin/scripts/fns.js') }}" defer></script>
+    <script src="{{ static_url_for('static', filename='admin/scripts/add_wbijam.js') }}" defer></script>
+{% endblock script %}
+
+{% block content %}
+<form id="main-form" method="POST" action="{{ url_for('admin_bp.add_wbijam_submit') }}" novalidate>
+    {{ add_form.hidden_tag() }}
+    <h1>Dodawanie anime z Wbijam</h1>
+    <section>
+        <div class="mg-bt-8">
+            {{ add_form.title.label(class="block mg-bt-4") }}
+            <div class="select-wrapper">
+                {{ add_form.title(class="input-block") }}
+            </div>
+            <div class="validation-error" id="title_error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-16">
+            {{ add_form.title_in_site.label(class="block mg-bt-4") }}
+            {{ add_form.title_in_site(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-16">
+            {{ add_form.source_link.label(class="block mg-bt-4") }}
+            {{ add_form.source_link(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-16">
+            {{ add_form.cr_numbering_diff.label(class="block mg-bt-4") }}
+            {{ add_form.cr_numbering_diff(class="input-block", min="0") }}
+            <small class="block muted mg-top-4">
+                Różnica pomiędzy numerowaniem sezonowym i Cr-owym (z pominięciem podziału na sezony).
+                Jeżeli w wybranym tytule na Ansi wykorzystywane jest numerowanie Cr to należy w pole podać różnice pomiędzy
+                numerowaniem Cr i sezonowym.
+                Przykład: Kono oto Tomare ep14 na ansi z numerowaniem sezonowym jest odcinkiem pierwszym drugiego sezonu.
+                Różnica to ilość odcinków w pierwszym sezonie czyli 13. Jeżeli nie ma różnicy pomiędzy numerowaniami należy
+                wpisać 0.
+            </small>
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="mg-bt-16">
+            {{ add_form.cr_diff_title.label(class="block mg-bt-4") }}
+            {{ add_form.cr_diff_title(class="input-block") }}
+            <div class="validation-error">&ZeroWidthSpace;</div>
+        </div>
+
+        <div class="form-pair-row mg-bt-16">
+            {{ add_form.submit(class="btn") }}
+            <a class="btn" href="{{ url_for('admin_bp.menu') }}">Powrót</a>
+        </div>
+    </section>
+</form>
+{% endblock content %}
